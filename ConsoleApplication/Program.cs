@@ -10,8 +10,8 @@ namespace ConsoleApplication
             Game game = new Game();
             game.Height = 20;
             game.Width = 50;
-            //Console.BufferHeight = game.Height;
-            //Console.BufferWidth = game.Width;
+            //Console.BufferHeight = 
+            //Console.BufferWidth = 
             
             char[,] Pos = new char[game.Height,game.Width];
             for (int i = 0; i < game.Height; i++)
@@ -70,7 +70,8 @@ namespace ConsoleApplication
 
         public void Move(int deltaX, int deltaY)
         {
-            
+            X += deltaX;
+            Y += deltaY;
         }
     }
     
