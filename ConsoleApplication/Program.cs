@@ -25,12 +25,13 @@ namespace ConsoleApplication
 
                 Field.DrawField(game.Field);
 
-                switch (Console.ReadLine())
+                var key = Console.ReadKey();
+                switch (key.KeyChar)
                 {
-                    case "a":
+                    case 'a':
                         StarLord.position.Move(0, -1);
                         break;
-                    case "d":
+                    case 'd':
                         StarLord.position.Move(0, 1);
                         break;
                 }
