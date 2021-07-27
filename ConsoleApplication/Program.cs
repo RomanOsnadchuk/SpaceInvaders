@@ -26,6 +26,8 @@ namespace ConsoleApplication
                 game.Field.ZeroField();
                 game.Field.Set(StarLord.Body, StarLord.Position);
                 game.Field.Set(Alien1.Body, Alien1.Position);
+                if (game.Bullet != null)
+                    game.Field.Set(game.Bullet.Body, game.Bullet.Position);
 
                 Draw(game.Field);
 
@@ -39,8 +41,12 @@ namespace ConsoleApplication
                     case 'd':
                         game.MoveStarship(0, 1);
                         break;
+                    case 'k':
+                        game.Shot();
+                        break;
                 }
                 game.MoveAlien(1, 0);
+                game.MoveShot(-1, 0);
 
                 Console.Clear();
 
@@ -107,6 +113,7 @@ namespace ConsoleApplication
         public Field Field { get; set; }
         public Sprite Starship { get; set; }
         public Sprite Alien { get; set; }
+        public Sprite Bullet { get; set; }
 
         public void MoveStarship(int deltaX, int deltaY)
         {
@@ -124,6 +131,23 @@ namespace ConsoleApplication
             Alien.Position.Y += deltaY;
         }
 
+        public void Shot()
+        {
+            var bullet = new Sprite();
+            Bullet = bullet;
+            bullet.Body = '|';
+            bullet.Position.X = Starship.Position.X+1;
+            bullet.Position.Y = Starship.Position.Y;
+        }
+
+        internal void MoveShot(int deltaX, int deltaY)
+        {
+            if (Bullet != null)
+            {
+                Bullet.Position.X += deltaX;
+                Bullet.Position.Y += deltaY;
+            }
+        }
     }
 
     class Sprite
