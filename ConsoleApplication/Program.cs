@@ -8,17 +8,18 @@ namespace ConsoleApplication
         {
             Game game = new Game();
             game.Field = Field.InitializeField(20, 50);
-            var Alien1 = new Starship();
+            var Alien1 = new Sprite();
             game.Alien = Alien1;
             Alien1.Body = 'W';
             Alien1.Position.X = 0;
             Alien1.Position.Y = game.Field.Width / 2 - 1;
 
-            Starship StarLord = new Starship();
+            Sprite StarLord = new Sprite();
             game.Starship = StarLord;
             StarLord.Body = 'Д';
             StarLord.Position.X = game.Field.Height - 1;
             StarLord.Position.Y = game.Field.Width / 2 - 1;
+
 
             while (true)
             {
@@ -104,8 +105,8 @@ namespace ConsoleApplication
     class Game
     {
         public Field Field { get; set; }
-        public Starship Starship { get; set; }
-        public Starship Alien { get; set; }
+        public Sprite Starship { get; set; }
+        public Sprite Alien { get; set; }
 
         public void MoveStarship(int deltaX, int deltaY)
         {
@@ -125,7 +126,7 @@ namespace ConsoleApplication
 
     }
 
-    class Starship
+    class Sprite
     {
         public char Body { get; set; }
         public Coordynate Position { get; set; } = new Coordynate();
