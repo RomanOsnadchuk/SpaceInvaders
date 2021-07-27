@@ -10,18 +10,18 @@ namespace ConsoleApplication
             game.Height = 20;
             game.Width = 50;
             game.Field = Field.InitializeField(game.Height, game.Width);
-            Invaider Alien1 = new Invaider();
+            var Alien1 = new Starship();
             Alien1.Body = 'W';
            
             Starship StarLord = new Starship();
             StarLord.Body = 'Д';
-            StarLord.position.X = game.Height-1;
-            StarLord.position.Y = game.Width/2-1;
+            StarLord.Position.X = game.Height-1;
+            StarLord.Position.Y = game.Width/2-1;
 
             while (true)
             {
                 game.Field.ZeroField();
-                game.Field.SetPosition(StarLord.Body, StarLord.position.X, StarLord.position.Y);
+                game.Field.SetPosition(StarLord.Body, StarLord.Position);
 
                 Draw(game.Field);
 
@@ -30,10 +30,10 @@ namespace ConsoleApplication
                 switch (key.KeyChar)
                 {
                     case 'a':
-                        StarLord.position.Move(0, -1);
+                        StarLord.Move(0, -1);
                         break;
                     case 'd':
-                        StarLord.position.Move(0, 1);
+                        StarLord.Move(0, 1);
                         break;
                 }
                 Console.Clear();
@@ -86,9 +86,9 @@ namespace ConsoleApplication
             }
         }
 
-        public void SetPosition(char symbol, int X, int Y)
+        public void SetPosition(char symbol, Coordynate coordynate)
         {
-            FieldArray[X, Y] = symbol;
+            FieldArray[coordynate.X, coordynate.Y] = symbol;
         }
     }
 
@@ -104,18 +104,14 @@ namespace ConsoleApplication
     class Starship
     {
         public char Body { get; set; }
-        public Coordynate position = new Coordynate();
-        //public int X { get; set; }
-       // public int Y { get; set; }
+        public Coordynate Position { get; set; } = new Coordynate();
 
-    }
+        public void Move(int deltaX, int deltaY)
+        {
+            Position.X += deltaX;
+            Position.Y += deltaY;
+        }
 
-    class Invaider
-    {
-        public char Body { get; set; }
-        public Coordynate position = new Coordynate();
-        //public int X { get; set; } 
-        //public int Y { get; set; }
     }
 
     class Coordynate
@@ -123,11 +119,7 @@ namespace ConsoleApplication
         public int X { get; set; }
         public int Y { get; set; }
                
-        public void Move(int deltaX, int deltaY)
-        {
-            X += deltaX;
-            Y += deltaY;
-        }
+        
     }
 
 }
