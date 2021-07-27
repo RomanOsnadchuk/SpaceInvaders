@@ -20,12 +20,13 @@ namespace ConsoleApplication
 
             while (true)
             {
-                Field.ZeroField(game.Field);
-                game.SetPosition(StarLord.Body, StarLord.position.X, StarLord.position.Y);
+                game.Field.ZeroField();
+                game.Field.SetPosition(StarLord.Body, StarLord.position.X, StarLord.position.Y);
 
-                Field.DrawField(game.Field);
+                Draw(game.Field);
 
                 var key = Console.ReadKey();
+
                 switch (key.KeyChar)
                 {
                     case 'a':
@@ -39,26 +40,30 @@ namespace ConsoleApplication
 
             }
         }
-    }
 
-    class Field
-    {
-        public static void DrawField(char[,] field)
+        public static void Draw(Field field)
         {
-            for (int i = 0; i < field.GetUpperBound(0)+1; i++)
+            for (int i = 0; i < field.FieldArray.GetUpperBound(0) + 1; i++)
             {
-                for (int j = 0; j < field.Length/ (field.GetUpperBound(0) + 1); j++)
+                for (int j = 0; j < field.FieldArray.Length / (field.FieldArray.GetUpperBound(0) + 1); j++)
                 {
-                    Console.Write(field[i, j]);
+                    Console.Write(field.FieldArray[i, j]);
                 }
 
                 Console.WriteLine("");
             }
         }
+    }
 
-        public static char[,] InitializeField(int height, int width)
+    class Field
+    {
+
+        public char[,] FieldArray { get; set; }
+
+        public static Field InitializeField(int height, int width)
         {
             char[,] Pos = new char[height, width];
+            
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
@@ -66,32 +71,34 @@ namespace ConsoleApplication
                     Pos[i, j] = '.';
                 }
             }
-            return Pos;
+
+            return new Field {FieldArray = Pos} ;
         }
 
-        public static void ZeroField(char[,] Field)
+        public void ZeroField()
         {
-            for (int i = 0; i < Field.GetUpperBound(0) + 1; i++)
+            for (int i = 0; i < FieldArray.GetUpperBound(0) + 1; i++)
             {
-                for (int j = 0; j < Field.Length / (Field.GetUpperBound(0) + 1); j++)
+                for (int j = 0; j < FieldArray.Length / (FieldArray.GetUpperBound(0) + 1); j++)
                 {
-                    Field[i, j] = '.';
+                    FieldArray[i, j] = '.';
                 }
             }
         }
 
-
+        public void SetPosition(char symbol, int X, int Y)
+        {
+            FieldArray[X, Y] = symbol;
+        }
     }
 
     class Game
     {
+        public Field Field { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public char[,] Field { get; set; }
-        public void SetPosition(char symbol, int X, int Y)
-        {
-            Field [X,Y] = symbol;
-        }
+        
+        
     }
 
     class Starship
