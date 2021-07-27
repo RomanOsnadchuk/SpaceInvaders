@@ -12,6 +12,7 @@ namespace ConsoleApplication
             Alien1.Body = 'W';
 
             Starship StarLord = new Starship();
+            game.Starship = StarLord;
             StarLord.Body = 'Д';
             StarLord.Position.X = game.Field.Height - 1;
             StarLord.Position.Y = game.Field.Width / 2 - 1;
@@ -28,10 +29,10 @@ namespace ConsoleApplication
                 switch (key.KeyChar)
                 {
                     case 'a':
-                        StarLord.Move(0, -1);
+                        game.MoveStarship(0, -1);
                         break;
                     case 'd':
-                        StarLord.Move(0, 1);
+                        game.MoveStarship(0, 1);
                         break;
                 }
                 Console.Clear();
@@ -97,8 +98,15 @@ namespace ConsoleApplication
     class Game
     {
         public Field Field { get; set; }
+        public Starship Starship { get; set; }
 
-
+        public void MoveStarship(int deltaX, int deltaY)
+        {
+            //Todo: FIX BUG
+            if (Starship.Position.X > 0 || Starship.Position.X < Field.Width)
+                Starship.Position.X += deltaX;
+            Starship.Position.Y += deltaY;
+        }
 
     }
 
@@ -106,21 +114,12 @@ namespace ConsoleApplication
     {
         public char Body { get; set; }
         public Coordynate Position { get; set; } = new Coordynate();
-
-        public void Move(int deltaX, int deltaY)
-        {
-            Position.X += deltaX;
-            Position.Y += deltaY;
-        }
-
+       
     }
 
     class Coordynate
     {
         public int X { get; set; }
         public int Y { get; set; }
-
-
     }
-
 }
