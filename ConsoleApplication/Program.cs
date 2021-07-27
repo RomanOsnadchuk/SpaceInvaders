@@ -9,7 +9,10 @@ namespace ConsoleApplication
             Game game = new Game();
             game.Field = Field.InitializeField(20, 50);
             var Alien1 = new Starship();
+            game.Alien = Alien1;
             Alien1.Body = 'W';
+            Alien1.Position.X = 0;
+            Alien1.Position.Y = game.Field.Width / 2 - 1;
 
             Starship StarLord = new Starship();
             game.Starship = StarLord;
@@ -21,6 +24,7 @@ namespace ConsoleApplication
             {
                 game.Field.ZeroField();
                 game.Field.Set(StarLord.Body, StarLord.Position);
+                game.Field.Set(Alien1.Body, Alien1.Position);
 
                 Draw(game.Field);
 
@@ -35,6 +39,8 @@ namespace ConsoleApplication
                         game.MoveStarship(0, 1);
                         break;
                 }
+                game.MoveAlien(1, 0);
+
                 Console.Clear();
 
             }
@@ -99,6 +105,7 @@ namespace ConsoleApplication
     {
         public Field Field { get; set; }
         public Starship Starship { get; set; }
+        public Starship Alien { get; set; }
 
         public void MoveStarship(int deltaX, int deltaY)
         {
@@ -106,6 +113,14 @@ namespace ConsoleApplication
             if (Starship.Position.X > 0 || Starship.Position.X < Field.Width)
                 Starship.Position.X += deltaX;
             Starship.Position.Y += deltaY;
+        }
+
+        public void MoveAlien(int deltaX, int deltaY)
+        {
+            //Todo: FIX BUG
+            
+            Alien.Position.X += deltaX;
+            Alien.Position.Y += deltaY;
         }
 
     }
