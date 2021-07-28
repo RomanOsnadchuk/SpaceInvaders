@@ -11,7 +11,7 @@ namespace ConsoleApplication
         public Field Field { get; set; }
         public Sprite Starship { get; set; }
         public Sprite Alien { get; set; }
-        public Sprite Bullet { get; set; }
+        public List<Sprite> Bullet { get; set; } = new List<Sprite>();
 
         public void MoveStarship(int deltaX, int deltaY)
         {
@@ -31,25 +31,23 @@ namespace ConsoleApplication
             if (Alien.Position.X > Field.Width-1) { Alien.Position.X = 0; Alien.Position.Y += 1; }
             Alien.Position.Y += deltaY;
             if (Alien.Position.Y > Field.Height-1) Console.WriteLine("!!!GAME OVER!!!");
+
         }
 
         public void Shot()
         {
-            var bullet = new Sprite();
-            Bullet = bullet;
-            bullet.Body = '|';
-            bullet.Position.X = Starship.Position.X;
-            bullet.Position.Y = Starship.Position.Y - 1;
+            Bullet.Add (new Sprite() {Body = '|', Position = {X = Starship.Position.X, Y = Starship.Position.Y - 0}});
         }
 
         internal void MoveShot(int deltaX, int deltaY)
         {
-            if (Bullet != null)
+            for (int i = 0; i < Bullet.Count; i++ )
             {
-                Bullet.Position.X += deltaX;
-                Bullet.Position.Y += deltaY;
-                if (Bullet.Position.Y < 0) Bullet = null;
+                Bullet[i].Position.X = Bullet[i].Position.X + deltaX;
+                Bullet[i].Position.Y = Bullet[i].Position.Y + deltaY;
+                if (Bullet[i].Position.Y < 0) Bullet.RemoveAt(i);
             } 
         }
+
     }
 }

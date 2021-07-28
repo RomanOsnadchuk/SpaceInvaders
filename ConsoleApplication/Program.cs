@@ -27,8 +27,12 @@ namespace ConsoleApplication
                 game.Field.ZeroField();
                 game.Field.Set(StarLord);
                 game.Field.Set(Alien1);
-                if (game.Bullet != null)
-                    game.Field.Set(game.Bullet);
+                foreach (var i in game.Bullet)
+                {
+                    if (i != null)
+                        game.Field.Set(i);
+                }
+                
 
                 Draw(game.Field);
 
