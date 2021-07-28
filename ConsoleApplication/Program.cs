@@ -8,7 +8,7 @@ namespace ConsoleApplication
         static void Main(string[] args)
         {
             Game game = new Game();
-            game.Field = Field.InitializeField(10, 50);
+            game.Field = Field.InitializeField(30, 50);
             var Alien1 = new Sprite();
             game.Alien = Alien1;
             Alien1.Body = 'W';
@@ -52,13 +52,18 @@ namespace ConsoleApplication
                 }
                 game.MoveAlien(1, 0);
                 game.MoveShot(0, -1);
-
+                game.Colision();
                 Console.Clear();
+                if (game.Alien == null)
+                {
+                    Console.WriteLine("!!!YOU WIN!!!");
+                    break;
+                }
 
             }
         }
 
-        public static void Draw(Field field)
+        static void Draw(Field field)
         {
             for (int i = 0; i < field.Height; i++)
             {

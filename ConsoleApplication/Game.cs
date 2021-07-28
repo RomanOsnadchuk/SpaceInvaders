@@ -49,5 +49,17 @@ namespace ConsoleApplication
             } 
         }
 
+        public void Colision()
+        {
+            for (int i = 0; i < Bullet.Count; i++)
+            {
+                if (Alien.Position == Bullet[i].Position)
+                {
+                    Bullet.RemoveAt(i);
+                    Alien = null;
+                    break;
+                }
+            }
+        }
     }
 }
