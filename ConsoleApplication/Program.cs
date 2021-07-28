@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace ConsoleApplication
 {
     class Program
@@ -7,27 +8,27 @@ namespace ConsoleApplication
         static void Main(string[] args)
         {
             Game game = new Game();
-            game.Field = Field.InitializeField(20, 50);
+            game.Field = Field.InitializeField(10, 50);
             var Alien1 = new Sprite();
             game.Alien = Alien1;
             Alien1.Body = 'W';
-            Alien1.Position.X = 0;
-            Alien1.Position.Y = game.Field.Width / 2 - 1;
+            Alien1.Position.Y = 0;
+            Alien1.Position.X = game.Field.Width / 2 - 1;
 
             Sprite StarLord = new Sprite();
             game.Starship = StarLord;
             StarLord.Body = 'Д';
-            StarLord.Position.X = game.Field.Height - 1;
-            StarLord.Position.Y = game.Field.Width / 2 - 1;
+            StarLord.Position.Y = game.Field.Height - 1;
+            StarLord.Position.X = game.Field.Width / 2 - 1;
 
 
             while (true)
             {
                 game.Field.ZeroField();
-                game.Field.Set(StarLord.Body, StarLord.Position);
-                game.Field.Set(Alien1.Body, Alien1.Position);
+                game.Field.Set(StarLord);
+                game.Field.Set(Alien1);
                 if (game.Bullet != null)
-                    game.Field.Set(game.Bullet.Body, game.Bullet.Position);
+                    game.Field.Set(game.Bullet);
 
                 Draw(game.Field);
 
@@ -36,17 +37,17 @@ namespace ConsoleApplication
                 switch (key.KeyChar)
                 {
                     case 'a':
-                        game.MoveStarship(0, -1);
+                        game.MoveStarship(-1, 0);
                         break;
                     case 'd':
-                        game.MoveStarship(0, 1);
+                        game.MoveStarship(1, 0);
                         break;
                     case 'k':
                         game.Shot();
                         break;
                 }
                 game.MoveAlien(1, 0);
-                game.MoveShot(-1, 0);
+                game.MoveShot(0, -1);
 
                 Console.Clear();
 
@@ -65,101 +66,5 @@ namespace ConsoleApplication
                 Console.WriteLine("");
             }
         }
-    }
-
-    class Field
-    {
-        public int Width => FieldArray.Length / Height;
-        public int Height => FieldArray.GetUpperBound(0) + 1;
-        public char[,] FieldArray { get; set; }
-
-        public static Field InitializeField(int height, int width)
-        {
-            char[,] Pos = new char[height, width];
-
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    Pos[i, j] = '.';
-                }
-            }
-
-            return new Field 
-            {
-                FieldArray = Pos,
-            };
-        }
-
-        public void ZeroField()
-        {
-            for (int i = 0; i < Height; i++)
-            {
-                for (int j = 0; j < Width; j++)
-                {
-                    FieldArray[i, j] = '.';
-                }
-            }
-        }
-
-        public void Set(char symbol, Coordynate coordynate)
-        {
-            FieldArray[coordynate.X, coordynate.Y] = symbol;
-        }
-    }
-
-    class Game
-    {
-        public Field Field { get; set; }
-        public Sprite Starship { get; set; }
-        public Sprite Alien { get; set; }
-        public Sprite Bullet { get; set; }
-
-        public void MoveStarship(int deltaX, int deltaY)
-        {
-            //Todo: FIX BUG
-            if (Starship.Position.X > 0 || Starship.Position.X < Field.Width)
-                Starship.Position.X += deltaX;
-            Starship.Position.Y += deltaY;
-        }
-
-        public void MoveAlien(int deltaX, int deltaY)
-        {
-            //Todo: FIX BUG
-            
-            Alien.Position.X += deltaX;
-            Alien.Position.Y += deltaY;
-        }
-
-        public void Shot()
-        {
-            var bullet = new Sprite();
-            Bullet = bullet;
-            bullet.Body = '|';
-            bullet.Position.X = Starship.Position.X+1;
-            bullet.Position.Y = Starship.Position.Y;
-        }
-
-        internal void MoveShot(int deltaX, int deltaY)
-        {
-            if (Bullet != null)
-            {
-                Bullet.Position.X += deltaX;
-                Bullet.Position.Y += deltaY;
-            }
-        }
-    }
-
-    class Sprite
-    {
-        public char Body { get; set; }
-        public Coordynate Position { get; set; } = new Coordynate();
-       
-    }
-
-    class Coordynate
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
     }
 }
