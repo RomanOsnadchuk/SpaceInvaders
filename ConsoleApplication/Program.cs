@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Core;
 
 namespace ConsoleApplication
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             var game = new Game {Field = Field.InitializeField(30, 50)};
             var alien1 = new Sprite();
@@ -20,6 +22,25 @@ namespace ConsoleApplication
             starLord.Position.Y = game.Field.Height - 1;
             starLord.Position.X = game.Field.Width / 2 - 1;
 
+            _ = Task.Run(() =>
+              {
+                  while (true)
+                  {
+                      var key = Console.ReadKey();
+                      switch (key.KeyChar)
+                      {
+                          case 'a':
+                              game.MoveStarship(-1, 0);
+                              break;
+                          case 'd':
+                              game.MoveStarship(1, 0);
+                              break;
+                          case 'k':
+                              game.Shot();
+                              break;
+                      }
+                  }
+              });
 
             while (true)
             {
@@ -30,27 +51,13 @@ namespace ConsoleApplication
                     if (i != null)
                         game.Field.Set(i);
 
-
                 Draw(game.Field);
-
-                var key = Console.ReadKey();
-
-                switch (key.KeyChar)
-                {
-                    case 'a':
-                        game.MoveStarship(-1, 0);
-                        break;
-                    case 'd':
-                        game.MoveStarship(1, 0);
-                        break;
-                    case 'k':
-                        game.Shot();
-                        break;
-                }
 
                 game.MoveAlien(1, 0);
                 game.MoveShot(0, -1);
                 game.Colision();
+
+                await Task.Delay(1000 / 12);
                 Console.Clear();
                 if (game.Alien == null)
                 {
