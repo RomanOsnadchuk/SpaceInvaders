@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace Core
 {
     public class Game
+
     {
         public Field Field { get; set; }
         public Sprite Starship { get; set; }

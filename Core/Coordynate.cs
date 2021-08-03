@@ -8,6 +8,7 @@ namespace Core
         public int Y { get; set; }
 
         public bool Equals(Coordynate other)
+
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -24,9 +25,12 @@ namespace Core
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(X, Y);
+            unchecked
+            {
+                return (X * 397) ^ Y;
+            }
         }
-
+        
         public static bool operator ==(Coordynate left, Coordynate right)
         {
             return Equals(left, right);
