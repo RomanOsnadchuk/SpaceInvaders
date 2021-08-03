@@ -1,9 +1,8 @@
 ﻿namespace ConsoleApplication
 {
-    class Sprite
+    internal class Sprite
     {
         public char Body { get; set; }
-        public Coordynate Position { get; set; } = new Coordynate();
-       
+        public Coordynate Position { get; set; } = new();
     }
 }

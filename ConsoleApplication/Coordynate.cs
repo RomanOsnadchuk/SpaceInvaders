@@ -1,17 +1,40 @@
-﻿namespace ConsoleApplication
+﻿using System;
+
+namespace ConsoleApplication
 {
-    class Coordynate
+    internal class Coordynate : IEquatable<Coordynate>
     {
         public int X { get; set; }
         public int Y { get; set; }
 
-        public static bool operator == (Coordynate c1, Coordynate c2)
+        public bool Equals(Coordynate other)
         {
-            return c1.X == c2.X && c1.Y == c2.Y;
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return X == other.X && Y == other.Y;
         }
-        public static bool operator !=(Coordynate c1, Coordynate c2)
+
+        public override bool Equals(object obj)
         {
-            return c1.X != c2.X || c1.Y != c2.Y;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Coordynate) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
+        }
+
+        public static bool operator ==(Coordynate left, Coordynate right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Coordynate left, Coordynate right)
+        {
+            return !Equals(left, right);
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿using System;
 
-
 namespace ConsoleApplication
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Game game = new Game();
+            var game = new Game();
             game.Field = Field.InitializeField(30, 50);
             var Alien1 = new Sprite();
             game.Alien = Alien1;
@@ -15,7 +14,7 @@ namespace ConsoleApplication
             Alien1.Position.Y = 0;
             Alien1.Position.X = game.Field.Width / 2 - 1;
 
-            Sprite StarLord = new Sprite();
+            var StarLord = new Sprite();
             game.Starship = StarLord;
             StarLord.Body = 'Д';
             StarLord.Position.Y = game.Field.Height - 1;
@@ -28,11 +27,9 @@ namespace ConsoleApplication
                 game.Field.Set(StarLord);
                 game.Field.Set(Alien1);
                 foreach (var i in game.Bullet)
-                {
                     if (i != null)
                         game.Field.Set(i);
-                }
-                
+
 
                 Draw(game.Field);
 
@@ -50,6 +47,7 @@ namespace ConsoleApplication
                         game.Shot();
                         break;
                 }
+
                 game.MoveAlien(1, 0);
                 game.MoveShot(0, -1);
                 game.Colision();
@@ -59,18 +57,14 @@ namespace ConsoleApplication
                     Console.WriteLine("!!!YOU WIN!!!");
                     break;
                 }
-
             }
         }
 
-        static void Draw(Field field)
+        private static void Draw(Field field)
         {
-            for (int i = 0; i < field.Height; i++)
+            for (var i = 0; i < field.Height; i++)
             {
-                for (int j = 0; j < field.Width; j++)
-                {
-                    Console.Write(field.FieldArray[i, j]);
-                }
+                for (var j = 0; j < field.Width; j++) Console.Write(field.FieldArray[i, j]);
 
                 Console.WriteLine("");
             }
