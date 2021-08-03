@@ -1,6 +1,6 @@
-﻿namespace ConsoleApplication
+﻿namespace Core
 {
-    internal class Field
+    public class Field
     {
         public int Width => FieldArray.Length / Height;
         public int Height => FieldArray.GetUpperBound(0) + 1;
@@ -8,15 +8,15 @@
 
         public static Field InitializeField(int height, int width)
         {
-            var Pos = new char[height, width];
+            var pos = new char[height, width];
 
             for (var i = 0; i < height; i++)
             for (var j = 0; j < width; j++)
-                Pos[i, j] = '.';
+                pos[i, j] = '.';
 
             return new Field
             {
-                FieldArray = Pos
+                FieldArray = pos
             };
         }
 

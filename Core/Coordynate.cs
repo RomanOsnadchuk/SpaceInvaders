@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ConsoleApplication
+namespace Core
 {
-    internal class Coordynate : IEquatable<Coordynate>
+    public class Coordynate : IEquatable<Coordynate>
     {
         public int X { get; set; }
         public int Y { get; set; }

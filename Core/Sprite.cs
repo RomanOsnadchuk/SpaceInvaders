@@ -1,6 +1,6 @@
-﻿namespace ConsoleApplication
+﻿namespace Core
 {
-    internal class Sprite
+    public class Sprite
     {
         public char Body { get; set; }
         public Coordynate Position { get; set; } = new();

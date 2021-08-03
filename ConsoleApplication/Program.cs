@@ -1,4 +1,5 @@
 ﻿using System;
+using Core;
 
 namespace ConsoleApplication
 {
@@ -6,26 +7,25 @@ namespace ConsoleApplication
     {
         private static void Main(string[] args)
         {
-            var game = new Game();
-            game.Field = Field.InitializeField(30, 50);
-            var Alien1 = new Sprite();
-            game.Alien = Alien1;
-            Alien1.Body = 'W';
-            Alien1.Position.Y = 0;
-            Alien1.Position.X = game.Field.Width / 2 - 1;
+            var game = new Game {Field = Field.InitializeField(30, 50)};
+            var alien1 = new Sprite();
+            game.Alien = alien1;
+            alien1.Body = 'W';
+            alien1.Position.Y = 0;
+            alien1.Position.X = game.Field.Width / 2 - 1;
 
-            var StarLord = new Sprite();
-            game.Starship = StarLord;
-            StarLord.Body = 'Д';
-            StarLord.Position.Y = game.Field.Height - 1;
-            StarLord.Position.X = game.Field.Width / 2 - 1;
+            var starLord = new Sprite();
+            game.Starship = starLord;
+            starLord.Body = 'Д';
+            starLord.Position.Y = game.Field.Height - 1;
+            starLord.Position.X = game.Field.Width / 2 - 1;
 
 
             while (true)
             {
                 game.Field.ZeroField();
-                game.Field.Set(StarLord);
-                game.Field.Set(Alien1);
+                game.Field.Set(starLord);
+                game.Field.Set(alien1);
                 foreach (var i in game.Bullet)
                     if (i != null)
                         game.Field.Set(i);

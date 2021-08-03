@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleApplication
+namespace Core
 {
-    internal class Game
+    public class Game
     {
         public Field Field { get; set; }
         public Sprite Starship { get; set; }
@@ -39,7 +39,7 @@ namespace ConsoleApplication
             Bullet.Add(new Sprite {Body = '|', Position = {X = Starship.Position.X, Y = Starship.Position.Y - 0}});
         }
 
-        internal void MoveShot(int deltaX, int deltaY)
+        public void MoveShot(int deltaX, int deltaY)
         {
             for (var i = 0; i < Bullet.Count; i++)
             {
