@@ -4,6 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="489.237" Width="658.992">
-    <Grid />
+        Title="MainWindow" Height="600" Width="525">
+    <Canvas Name="myCanvas" Focusable="True" KeyDown="KeyIsDown" KeyUp="KeyIsUp" >
+
+        <Label Name="txtInfo" FontSize="16">Landed on - ??</Label>
+
+        <Rectangle Name="starship" Fill="blue" Tag="starship" Width="48" Height="49" Canvas.Left="220" Canvas.Top="510" />
+        <Rectangle Name="bullet" Fill="Orange" Tag="bullet" Width="5" Height="35" Canvas.Left="240" Canvas.Top="470" />
+        <Rectangle Name="invaider" Fill="Red" Tag="invader" Width="43" Height="42" Canvas.Left="10" Canvas.Top="36" />
+
+    </Canvas>
+
 </Window>

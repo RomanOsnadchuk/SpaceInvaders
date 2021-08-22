@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Threading;
+using System.Windows.Input;
 using Core;
 
 namespace WPFapplication
@@ -9,70 +13,69 @@ namespace WPFapplication
     /// </summary>
     public partial class MainWindow : Window
     {
+        DispatcherTimer timer = new DispatcherTimer();
+
+        int speed = 10;
+        int dropSpeed = 10;
+        bool goLeft, goRight, Shot;
+
         public MainWindow()
         {
             InitializeComponent();
-            var game = new Game {Field = Field.InitializeField(30, 50)};
-            var alien1 = new Sprite();
-            game.Alien = alien1;
-            alien1.Body = 'W';
-            alien1.Position.Y = 0;
-            alien1.Position.X = game.Field.Width / 2 - 1;
-
-            var starLord = new Sprite();
-            game.Starship = starLord;
-            starLord.Body = 'Д';
-            starLord.Position.Y = game.Field.Height - 1;
-            starLord.Position.X = game.Field.Width / 2 - 1;
-
-
-            while (true)
-            {
-                game.Field.ZeroField();
-                game.Field.Set(starLord);
-                game.Field.Set(alien1);
-                foreach (var i in game.Bullet)
-                    if (i != null)
-                        game.Field.Set(i);
-
-
-                Draw(game.Field);
-
-                var key = Console.ReadKey();
-
-                switch (key.KeyChar)
-                {
-                    case 'a':
-                        game.MoveStarship(-1, 0);
-                        break;
-                    case 'd':
-                        game.MoveStarship(1, 0);
-                        break;
-                    case 'k':
-                        game.Shot();
-                        break;
-                }
-
-                game.MoveAlien(1, 0);
-                game.MoveShot(0, -1);
-                game.Colision();
-                Console.Clear();
-                if (game.Alien == null)
-                {
-                    Console.WriteLine("!!!YOU WIN!!!");
-                    break;
-                }
-            }
+            myCanvas.Focus();
+            timer.Tick += MainTimerEvent;
+            timer.Interval = TimeSpan.FromMilliseconds(20);
+            timer.Start();
         }
 
-        private static void Draw(Field field)
+        private void MainTimerEvent(object sender, EventArgs e)
         {
-            for (var i = 0; i < field.Height; i++)
-            {
-                for (var j = 0; j < field.Width; j++) Console.Write(field.FieldArray[i, j]);
+            Canvas.SetBottom(starship, Canvas.GetTop(starship) + 0);
 
-                Console.WriteLine("");
+            if (goLeft == true && Canvas.GetLeft(starship) > 0)
+            {
+                Canvas.SetLeft(starship, Canvas.GetLeft(starship) - speed);
+            }
+            if (goRight == true && Canvas.GetLeft(starship) + (starship.Width + 24) < Application.Current.MainWindow.Width)
+            {
+                Canvas.SetLeft(starship, Canvas.GetLeft(starship) + speed);
+            }
+
+            
+        }
+
+            private void KeyIsDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Left)
+            {
+                goLeft = true;
+            }
+            if (e.Key == Key.Right)
+            {
+                goRight = true;
+            }
+            if (e.Key == Key.Space)
+            {
+                Shot = true;
             }
         }
+
+        private void KeyIsUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Left)
+            {
+                goLeft = false;
+            }
+            if (e.Key == Key.Right)
+            {
+                goRight = false;
+            }
+            if (e.Key == Key.Space)
+            {
+                Shot = false;
+            }
+        }
+
+       
     }
 }
