@@ -17,7 +17,7 @@ namespace WPFapplication
 
         int millisecGame = 0;
         int speed = 10;
-        bool start = true, goLeft, goRight, Shot, invaiderDir = true, InvaderLive = true;
+        bool goLeft, goRight, Shot, StartGame, invaiderDir = true, InvaderLive = true;
         List<Rectangle> Bullets = new List<Rectangle>();
         List<Rectangle> Invaiders = new List<Rectangle>();
 
@@ -28,80 +28,52 @@ namespace WPFapplication
             timer.Tick += MainTimerEvent;
             timer.Interval = TimeSpan.FromMilliseconds(20);
 
-            if (start) timer.Start();
-            //var tmp = TimeSpan.FromMilliseconds(millisecGame);
-            //timerbox.Text = "Time = " + tmp.ToString(@"mm\:ss\:ms");
+            timer.Start();
         }
 
         private void MainTimerEvent(object sender, EventArgs e)
         {
+            if (StartGame)
+            {
+                Start.Visibility = Visibility.Hidden;
 
-            if (InvaderLive)
-            {
-                MoveOnPress(starship, speed);
-                InvaidersAtacks();
-            }
-            else 
-            {
-                invaider.Fill = Brushes.Gray;
-            }
-
-            if (Bullets != null && Bullets.Count != 0)
-            {
-                for (int i = 0; i < Bullets.Count; i++)
+                if (InvaderLive)
                 {
-                    Canvas.SetTop(Bullets[i], Canvas.GetTop(Bullets[i]) - 10);
-                    if (Colision(Bullets[i], invaider)) { DieInvaider(); myCanvas.Children.Remove(Bullets[i]);  Bullets.RemoveAt(i); break; }
-                    if (Canvas.GetTop(Bullets[i]) < 20) { myCanvas.Children.Remove(Bullets[i]);  Bullets.RemoveAt(i); }
+                    StarshipGoGo();
+                    InvaidersAtacks();
+                    millisecGame += 20;
                 }
+                
+                var tmp = TimeSpan.FromMilliseconds(millisecGame);
+                timerbox.Text = "Time = " + tmp.ToString();
             }
-            
-
-            millisecGame += 20;
-            var tmp = TimeSpan.FromMilliseconds(millisecGame);
-            timerbox.Text = "Time = " + tmp.ToString();
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left)
+            switch (e.Key)
             {
-                goLeft = true;
-            }
-            if (e.Key == Key.Right)
-            {
-                goRight = true;
-            }
-            if (e.Key == Key.Space)
-            {
-                if (Shot) Fire();
-                Shot = false;
-            }
-            if (e.Key == Key.Enter)
-            {
-                start = true;
+                case Key.Left: goLeft = true; break;
+                case Key.Right: goRight = true; break;
+                case Key.Space: if (Shot) Fire(); Shot = false; break;
+                case Key.Enter: StartGame = true; break;
             }
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left)
+            switch (e.Key)
             {
-                goLeft = false;
-            }
-            if (e.Key == Key.Right)
-            {
-                goRight = false;
-            }
-            if (e.Key == Key.Space)
-            {
-                Shot = true;
+                case Key.Left: goLeft = false; break;
+                case Key.Right: goRight = false; break;
+                case Key.Space: if (Shot) Fire(); Shot = true; break;
             }
         }
 
         private void DieInvaider()
         {
             InvaderLive = false;
+            invaider.Fill = Brushes.Gray;
             win.Visibility = Visibility.Visible;
         }
 
@@ -119,9 +91,29 @@ namespace WPFapplication
             {
                 Canvas.SetLeft(starship, Canvas.GetLeft(ship) - speed);
             }
+
             if (goRight == true && Canvas.GetLeft(ship) + (ship.Width + 24) < Application.Current.MainWindow.Width)
             {
                 Canvas.SetLeft(starship, Canvas.GetLeft(ship) + speed);
+            }
+        }
+
+        private void StarshipGoGo()
+        {
+            MoveOnPress(starship, speed);
+            BulletGoGo();
+        }
+
+        private void BulletGoGo()
+        {
+            if (Bullets != null && Bullets.Count != 0)
+            {
+                for (int i = 0; i < Bullets.Count; i++)
+                {
+                    Canvas.SetTop(Bullets[i], Canvas.GetTop(Bullets[i]) - 10);
+                    if (Colision(Bullets[i], invaider)) { DieInvaider(); myCanvas.Children.Remove(Bullets[i]); Bullets.RemoveAt(i); break; }
+                    if (Canvas.GetTop(Bullets[i]) < 20) { myCanvas.Children.Remove(Bullets[i]); Bullets.RemoveAt(i); }
+                }
             }
         }
 
@@ -133,28 +125,30 @@ namespace WPFapplication
                 {
                     Canvas.SetLeft(invaider, Canvas.GetLeft(invaider) + speed);
                 }
-                else 
+
+                else
                 {
                     invaiderDir = false;
                     Canvas.SetTop(invaider, Canvas.GetTop(invaider) + invaider.Height);
                 }
             }
+
             else
             {
                 if (Canvas.GetLeft(invaider) > 50 )
                 {
                     Canvas.SetLeft(invaider, Canvas.GetLeft(invaider) - speed);
                 }
+
                 else
                 {
                     invaiderDir = true;
                     Canvas.SetTop(invaider, Canvas.GetTop(invaider) + invaider.Height);
                 }
-
             }
         }
 
-        private bool Colision(Rectangle Body1, Rectangle Body2)
+        private bool Colision(Shape Body1, Shape Body2)
         {
             return (Canvas.GetLeft(Body1) > Canvas.GetLeft(Body2))
                 && (Canvas.GetLeft(Body1) < Canvas.GetLeft(Body2) + Body2.Width)

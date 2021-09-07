@@ -12,6 +12,7 @@
         <Rectangle Name="invaider" Fill="Red" Tag="invader" Width="43" Height="42" Canvas.Left="10" Canvas.Top="36" />
         <TextBox Name="win" Height="72" Canvas.Left="85" TextWrapping="Wrap" Text="You Win!!!" Canvas.Top="205" Width="357" TextAlignment="Center" HorizontalAlignment="Center" FontSize="50" FontWeight="Bold" FontFamily="Swis721 BlkEx BT" Background="White" Foreground="#FFE80000" Visibility="Hidden" IsEnabled="False"/>
         <TextBox Name ="timerbox" Height="23" Canvas.Left="305" TextWrapping="Wrap" Text="Time = " Canvas.Top="10" Width="202" RenderTransformOrigin="0.508,0.522" Cursor="None" IsEnabled="False"/>
+        <TextBlock Name ="Start" Height="74" Canvas.Left="102" TextWrapping="Wrap" Text="Press Enter to Start" Canvas.Top="282" Width="340" FontSize="24" FontWeight="Bold" TextAlignment="Center"/>
 
     </Canvas>
 
