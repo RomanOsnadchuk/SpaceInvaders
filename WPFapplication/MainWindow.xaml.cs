@@ -11,15 +11,13 @@ using Core;
 
 namespace WPFapplication
 {
-    /// <summary>
-    ///     Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         DispatcherTimer timer = new DispatcherTimer();
 
+        int millisecGame = 0;
         int speed = 10;
-        bool start = true, goLeft, goRight, Shot, InvaderLive = true;
+        bool start = true, goLeft, goRight, Shot, invaiderDir = true, InvaderLive = true;
         List<Rectangle> Bullets = new List<Rectangle>();
         List<Rectangle> Invaiders = new List<Rectangle>();
 
@@ -31,6 +29,8 @@ namespace WPFapplication
             timer.Interval = TimeSpan.FromMilliseconds(20);
 
             if (start) timer.Start();
+            //var tmp = TimeSpan.FromMilliseconds(millisecGame);
+            //timerbox.Text = "Time = " + tmp.ToString(@"mm\:ss\:ms");
         }
 
         private void MainTimerEvent(object sender, EventArgs e)
@@ -39,15 +39,7 @@ namespace WPFapplication
             if (InvaderLive)
             {
                 MoveOnPress(starship, speed);
-                if (Canvas.GetLeft(invaider) + invaider.Width + 50 < Application.Current.MainWindow.Width)
-                {
-                    InvaidersAtacks();
-                }
-                else
-                {
-                    Canvas.SetLeft(invaider, 2);
-                    Canvas.SetTop(invaider, Canvas.GetTop(invaider) + invaider.Height);
-                }
+                InvaidersAtacks();
             }
             else 
             {
@@ -63,7 +55,11 @@ namespace WPFapplication
                     if (Canvas.GetTop(Bullets[i]) < 20) { myCanvas.Children.Remove(Bullets[i]);  Bullets.RemoveAt(i); }
                 }
             }
+            
 
+            millisecGame += 20;
+            var tmp = TimeSpan.FromMilliseconds(millisecGame);
+            timerbox.Text = "Time = " + tmp.ToString();
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
@@ -131,7 +127,31 @@ namespace WPFapplication
 
         private void InvaidersAtacks()
         {
-            Canvas.SetLeft(invaider, Canvas.GetLeft(invaider) + speed);
+            if (invaiderDir)
+            {
+                if (Canvas.GetLeft(invaider) + invaider.Width + 50 < Application.Current.MainWindow.Width)
+                {
+                    Canvas.SetLeft(invaider, Canvas.GetLeft(invaider) + speed);
+                }
+                else 
+                {
+                    invaiderDir = false;
+                    Canvas.SetTop(invaider, Canvas.GetTop(invaider) + invaider.Height);
+                }
+            }
+            else
+            {
+                if (Canvas.GetLeft(invaider) > 50 )
+                {
+                    Canvas.SetLeft(invaider, Canvas.GetLeft(invaider) - speed);
+                }
+                else
+                {
+                    invaiderDir = true;
+                    Canvas.SetTop(invaider, Canvas.GetTop(invaider) + invaider.Height);
+                }
+
+            }
         }
 
         private bool Colision(Rectangle Body1, Rectangle Body2)
