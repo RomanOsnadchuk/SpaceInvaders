@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Core
 {
-    class Bullet
+    public class Bullet
     {
-        
+        public object Body { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace WPFapplication
         bool goLeft, goRight, Shot, StartGame, invaiderDir = true, InvaderLive = true;
         List<Rectangle> Bullets = new List<Rectangle>();
         List<Rectangle> Invaiders = new List<Rectangle>();
-        Core.Starship<Shape> Starship1 = new Starship<Shape>(starship, Canvas.GetLeft(starship), Canvas.GetTop(starship), -1);
+        
 
         public MainWindow()
         {
@@ -28,6 +28,9 @@ namespace WPFapplication
             timer.Interval = TimeSpan.FromMilliseconds(20);
 
             timer.Start();
+
+            Starship<Rectangle> Starship1 = new Starship<Rectangle>(starship, (int)Canvas.GetLeft(starship), (int)Canvas.GetTop(starship), -1);
+            
         }
 
         private void MainTimerEvent(object sender, EventArgs e)
