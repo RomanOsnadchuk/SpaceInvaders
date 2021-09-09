@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Threading;
 using System.Windows.Input;
 using System.Windows.Shapes;
@@ -14,12 +13,12 @@ namespace WPFapplication
     public partial class MainWindow : Window
     {
         DispatcherTimer timer = new DispatcherTimer();
-
-        int millisecGame = 0;
+        DateTime timerReal = DateTime.Now;
         int speed = 10;
         bool goLeft, goRight, Shot, StartGame, invaiderDir = true, InvaderLive = true;
         List<Rectangle> Bullets = new List<Rectangle>();
         List<Rectangle> Invaiders = new List<Rectangle>();
+        Core.Starship<Shape> Starship1 = new Starship<Shape>(starship, Canvas.GetLeft(starship), Canvas.GetTop(starship), -1);
 
         public MainWindow()
         {
@@ -41,10 +40,9 @@ namespace WPFapplication
                 {
                     StarshipGoGo();
                     InvaidersAtacks();
-                    millisecGame += 20;
                 }
                 
-                var tmp = TimeSpan.FromMilliseconds(millisecGame);
+                TimeSpan tmp = DateTime.Now - timerReal;
                 timerbox.Text = "Time = " + tmp.ToString();
             }
         }
@@ -66,7 +64,7 @@ namespace WPFapplication
             {
                 case Key.Left: goLeft = false; break;
                 case Key.Right: goRight = false; break;
-                case Key.Space: if (Shot) Fire(); Shot = true; break;
+                case Key.Space: Shot = true; break;
             }
         }
 
@@ -87,15 +85,11 @@ namespace WPFapplication
        
         private void MoveOnPress(Rectangle ship, int speed)
         {
-            if (goLeft == true && Canvas.GetLeft(ship) > 0)
-            {
+            if (goLeft && Canvas.GetLeft(ship) > 0)
                 Canvas.SetLeft(starship, Canvas.GetLeft(ship) - speed);
-            }
 
-            if (goRight == true && Canvas.GetLeft(ship) + (ship.Width + 24) < Application.Current.MainWindow.Width)
-            {
+            if (goRight && Canvas.GetLeft(ship) + (ship.Width + 24) < Application.Current.MainWindow.Width)
                 Canvas.SetLeft(starship, Canvas.GetLeft(ship) + speed);
-            }
         }
 
         private void StarshipGoGo()
@@ -111,8 +105,19 @@ namespace WPFapplication
                 for (int i = 0; i < Bullets.Count; i++)
                 {
                     Canvas.SetTop(Bullets[i], Canvas.GetTop(Bullets[i]) - 10);
-                    if (Colision(Bullets[i], invaider)) { DieInvaider(); myCanvas.Children.Remove(Bullets[i]); Bullets.RemoveAt(i); break; }
-                    if (Canvas.GetTop(Bullets[i]) < 20) { myCanvas.Children.Remove(Bullets[i]); Bullets.RemoveAt(i); }
+                    if (Colision(Bullets[i], invaider))
+                    {
+                        DieInvaider(); 
+                        myCanvas.Children.Remove(Bullets[i]);
+                        Bullets.RemoveAt(i);
+                        break;
+                    }
+
+                    if (Canvas.GetTop(Bullets[i]) < 20)
+                    {
+                        myCanvas.Children.Remove(Bullets[i]);
+                        Bullets.RemoveAt(i);
+                    }
                 }
             }
         }
@@ -122,9 +127,7 @@ namespace WPFapplication
             if (invaiderDir)
             {
                 if (Canvas.GetLeft(invaider) + invaider.Width + 50 < Application.Current.MainWindow.Width)
-                {
                     Canvas.SetLeft(invaider, Canvas.GetLeft(invaider) + speed);
-                }
 
                 else
                 {
@@ -136,9 +139,7 @@ namespace WPFapplication
             else
             {
                 if (Canvas.GetLeft(invaider) > 50 )
-                {
                     Canvas.SetLeft(invaider, Canvas.GetLeft(invaider) - speed);
-                }
 
                 else
                 {
