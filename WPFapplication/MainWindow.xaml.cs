@@ -15,21 +15,22 @@ namespace WPFapplication
         DispatcherTimer timer = new DispatcherTimer();
         DateTime timerReal = DateTime.Now;
         int speed = 10;
-        bool goLeft, goRight, Shot, StartGame, invaiderDir = true, InvaderLive = true;
-        List<Rectangle> Bullets = new List<Rectangle>();
-        List<Rectangle> Invaiders = new List<Rectangle>();
-        
+        bool Shot, StartGame, invaiderDir = true, InvaderLive = true;
+        List<Rectangle> Bullets = new();
+        Starship Starship1;
 
         public MainWindow()
         {
             InitializeComponent();
             myCanvas.Focus();
+            Starship1 = new((object)starship, (int)Canvas.GetLeft(starship), (int)Canvas.GetTop(starship), -1);
+
             timer.Tick += MainTimerEvent;
             timer.Interval = TimeSpan.FromMilliseconds(20);
 
             timer.Start();
 
-            Starship<Rectangle> Starship1 = new Starship<Rectangle>(starship, (int)Canvas.GetLeft(starship), (int)Canvas.GetTop(starship), -1);
+            
             
         }
 
@@ -54,8 +55,8 @@ namespace WPFapplication
         {
             switch (e.Key)
             {
-                case Key.Left: goLeft = true; break;
-                case Key.Right: goRight = true; break;
+                case Key.Left: Starship1.Move(-speed, 0); break;
+                case Key.Right: Starship1.Move(speed, 0); break;
                 case Key.Space: if (Shot) Fire(); Shot = false; break;
                 case Key.Enter: StartGame = true; break;
             }
@@ -65,8 +66,8 @@ namespace WPFapplication
         {
             switch (e.Key)
             {
-                case Key.Left: goLeft = false; break;
-                case Key.Right: goRight = false; break;
+                //case Key.Left: break;
+                //case Key.Right: break;
                 case Key.Space: Shot = true; break;
             }
         }
@@ -81,23 +82,19 @@ namespace WPFapplication
         private void Fire()
         {
             Bullets.Add(new Rectangle { Height = bullet.Height, Width = bullet.Width, Fill = Brushes.Blue });
-            Canvas.SetLeft(Bullets[Bullets.Count - 1], Canvas.GetLeft(starship));
-            Canvas.SetTop(Bullets[Bullets.Count - 1], Canvas.GetTop(starship));
+            Canvas.SetLeft(Bullets[Bullets.Count - 1], Starship1.Position.X);
+            Canvas.SetTop(Bullets[Bullets.Count - 1], Starship1.Position.Y);
             myCanvas.Children.Add(Bullets[Bullets.Count-1]);
         }
        
-        private void MoveOnPress(Rectangle ship, int speed)
+        private void UbdatePosition()
         {
-            if (goLeft && Canvas.GetLeft(ship) > 0)
-                Canvas.SetLeft(starship, Canvas.GetLeft(ship) - speed);
-
-            if (goRight && Canvas.GetLeft(ship) + (ship.Width + 24) < Application.Current.MainWindow.Width)
-                Canvas.SetLeft(starship, Canvas.GetLeft(ship) + speed);
+            Canvas.SetLeft((Rectangle)Starship1.Body, Starship1.Position.X);
         }
 
         private void StarshipGoGo()
         {
-            MoveOnPress(starship, speed);
+            UbdatePosition();
             BulletGoGo();
         }
 

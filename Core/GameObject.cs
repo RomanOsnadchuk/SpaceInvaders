@@ -1,12 +1,12 @@
 ﻿namespace Core
 {
-    public class Sprite<T>
+    public class GameObject
     {
         int directionAxis = 0;
-        public T Body { get; set; }
+        public object Body { get; set; }
         public Coordynate Position { get; set; }
 
-        public Sprite(T body, int x, int y, int direction)
+        public GameObject(object body, int x, int y, int direction)
         {
             Body = body;
             Position = new Coordynate(x, y);

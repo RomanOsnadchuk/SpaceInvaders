@@ -4,22 +4,18 @@ using System.Text;
 
 namespace Core
 {
-    public class Starship<T>
+    public class Starship:GameObject
     {
-        public Sprite<T> shipSprite { get; set; }
-        public List<Sprite<T>> Bullet = new List<Sprite<T>>();
-        public Starship(T body, int x, int y, int directionAxis = 1)
+        
+        //public List<GameObject<T>> Bullet = new List<GameObject<T>>();
+        public Starship(object body, int x, int y, int directionAxis = 1):base(body, x, y, directionAxis)
         {
-            shipSprite = new Sprite<T>(body, x, y, directionAxis);
         }
-
-
         
         public void Move(int deltaX, int deltaY)
         {
-            shipSprite.Position.X = deltaX;
-            shipSprite.Position.Y = deltaY;
+            Position.X += deltaX;
+            Position.Y += deltaY;
         }
-
     }
 }

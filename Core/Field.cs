@@ -27,9 +27,9 @@
                 FieldArray[i, j] = '.';
         }
 
-        public void Set(Sprite sprite)
+        public void Set(GameObject sprite)
         {
-            FieldArray[sprite.Position.Y, sprite.Position.X] = sprite.Body;
+            FieldArray[sprite.Position.Y, sprite.Position.X] = (char)sprite.Body;
         }
     }
 }

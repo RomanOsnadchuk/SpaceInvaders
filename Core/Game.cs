@@ -7,9 +7,9 @@ namespace Core
 
     {
         public Field Field { get; set; }
-        public Sprite Starship { get; set; }
-        public Sprite Alien { get; set; }
-        public List<Sprite> Bullet { get; set; } = new();
+        public GameObject Starship { get; set; }
+        public GameObject Alien { get; set; }
+        public List<GameObject> Bullet { get; set; } = new();
 
         public void MoveStarship(int deltaX, int deltaY)
         {
@@ -37,7 +37,7 @@ namespace Core
 
         public void Shot()
         {
-            Bullet.Add(new Sprite {Body = '|', Position = {X = Starship.Position.X, Y = Starship.Position.Y - 0}});
+           // Bullet.Add(new GameObject {Body = (object) '|', Starship.Position.X, Starship.Position.Y, });
         }
 
         public void MoveShot(int deltaX, int deltaY)
