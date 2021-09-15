@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using Core;
+using System;
 using System.Threading.Tasks;
-using Core;
 
 namespace ConsoleApplication
 {
@@ -9,18 +8,7 @@ namespace ConsoleApplication
     {
         private static async Task Main(string[] args)
         {
-            var game = new Game {Field = Field.InitializeField(30, 50)};
-            var alien1 = new Sprite();
-            game.Alien = alien1;
-            alien1.Body = 'W';
-            alien1.Position.Y = 0;
-            alien1.Position.X = game.Field.Width / 2 - 1;
-
-            var starLord = new Sprite();
-            game.Starship = starLord;
-            starLord.Body = 'Д';
-            starLord.Position.Y = game.Field.Height - 1;
-            starLord.Position.X = game.Field.Width / 2 - 1;
+            var game = new Game(60, 60, 10, ' ');
 
             _ = Task.Run(() =>
               {
@@ -45,8 +33,11 @@ namespace ConsoleApplication
             while (true)
             {
                 game.Field.ZeroField();
-                game.Field.Set(starLord);
-                game.Field.Set(alien1);
+                game.Field.Set(game.Starship);
+                foreach (var alien in game.Alien)
+                {
+                    game.Field.Set(alien);
+                }
                 foreach (var i in game.Bullet)
                     if (i != null)
                         game.Field.Set(i);
@@ -55,7 +46,7 @@ namespace ConsoleApplication
 
                 game.MoveAlien(1, 0);
                 game.MoveShot(0, -1);
-                game.Colision();
+                game.Collision();
 
                 await Task.Delay(1000 / 12);
                 Console.Clear();

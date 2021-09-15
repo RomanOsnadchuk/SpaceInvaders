@@ -16,8 +16,8 @@ namespace WPFapplication
         DateTime timerReal = DateTime.Now;
         int speed = 10;
         bool Shot, StartGame, invaiderDir = true, InvaderLive = true;
-        List<Rectangle> Bullets = new();
-        Starship Starship1;
+        List<Rectangle> Bullets = new List<Rectangle>();
+        GameObject Starship1;
 
         public MainWindow()
         {

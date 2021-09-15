@@ -2,15 +2,19 @@
 {
     public class GameObject
     {
-        int directionAxis = 0;
-        public object Body { get; set; }
+        public char Body { get; set; }
         public Coordynate Position { get; set; }
 
-        public GameObject(object body, int x, int y, int direction)
+        public GameObject(char body, int x, int y)
         {
             Body = body;
             Position = new Coordynate(x, y);
-            directionAxis = direction;
+        }
+
+        public void Move(int deltaX, int deltaY)
+        {
+            Position.X += deltaX;
+            Position.Y += deltaY;
         }
     }
 }
