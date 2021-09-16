@@ -23,7 +23,7 @@ namespace WPFapplication
         {
             InitializeComponent();
             myCanvas.Focus();
-            Starship1 = new((object)starship, (int)Canvas.GetLeft(starship), (int)Canvas.GetTop(starship), -1);
+            //Starship1 = new((object)starship, (int)Canvas.GetLeft(starship), (int)Canvas.GetTop(starship), -1);
 
             timer.Tick += MainTimerEvent;
             timer.Interval = TimeSpan.FromMilliseconds(20);
@@ -89,7 +89,7 @@ namespace WPFapplication
        
         private void UbdatePosition()
         {
-            Canvas.SetLeft((Rectangle)Starship1.Body, Starship1.Position.X);
+            //Canvas.SetLeft((Rectangle)Starship1.Body, Starship1.Position.X);
         }
 
         private void StarshipGoGo()

@@ -11,7 +11,8 @@
         {
             Width = width;
             Height = height;
-            FieldArray = new char[width,height];
+            Fond = fond;
+            FieldArray = new char[height, width];
             for (var i = 0; i < height; i++)
             for (var j = 0; j < width; j++)
                 FieldArray[i, j] = fond;

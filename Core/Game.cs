@@ -1,24 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Core
 {
     public class Game
 
     {
-        public Field Field { get; set; }
-        public GameObject Starship { get; set; }
-        public List<GameObject> Alien { get; set; }
-        public List<GameObject> Bullet { get; set; } = new List<GameObject>();
+        private int distanceAlien = 5;
+        public Field Field {get;}
+        private GameObject Starship {get;}
+        private List<GameObject> Alien { get;}
+        private List<GameObject> Bullet { get;} = new List<GameObject>();
 
-        public Game(int wigth , int height, int numberOfAlien, char backGround)
+        public Game(int width , int height, int numberOfAlien, char backGround)
         {
-            Field = new Field(wigth,height,backGround);
-            Starship = new GameObject('Д', wigth/2, height);
+            Field = new Field(width,height,backGround);
+
+            Starship = new GameObject('Д', width/2, height-1);
+
             Alien = new List<GameObject>();
-            for (int i = 0; i < numberOfAlien; i++)
+
+            for (int i = 0, j = 0; i < numberOfAlien; i++)
             {
-                Alien.Add(new GameObject('W',(i*1), 0));
+                if (i * distanceAlien - j * width < width)
+                    Alien.Add(new GameObject('W', (i * distanceAlien - j * width), j));
+                else
+                {
+                    j++;
+                    Alien.Add(new GameObject('W', (i * distanceAlien - j * width), j));
+                }
             }
         }
         public void MoveStarship(int deltaX, int deltaY)
@@ -45,13 +54,12 @@ namespace Core
                 }
 
                 alien.Position.Y += deltaY;
-                if (alien.Position.Y > Field.Height - 1) Console.WriteLine("!!!GAME OVER!!!");
             }
         }
 
         public void Shot()
         {
-           Bullet.Add(new GameObject ('|', Starship.Position.X, Starship.Position.Y));
+           Bullet.Add(new GameObject ('*', Starship.Position.X, Starship.Position.Y-1));
         }
 
         public void MoveShot(int deltaX, int deltaY)
@@ -69,13 +77,38 @@ namespace Core
             for (var i = 0; i < Alien.Count; i++)
             {
                 for (var j = 0; j < Bullet.Count; j++)
+                {
                     if (Alien[i].Position == Bullet[j].Position)
                     {
                         Bullet.RemoveAt(j);
                         Alien.RemoveAt(i);
                         break;
                     }
+                }
             }
+        }
+
+        public void UpdateField()
+        {
+            Field.ZeroField();
+            Field.Set(Starship);
+            foreach (var alien in Alien) Field.Set(alien);
+            foreach (var bullet in Bullet) if (Bullet != null) Field.Set(bullet);
+        }
+
+        public bool AlienIsDie()
+        {
+            return Alien.Count == 0;
+        }
+
+        public bool AlienIsWin()
+        {
+            foreach (var alien in Alien)
+            {
+                if (alien.Position.Y == Field.Height - 1) return true;
+            }
+
+            return false;
         }
     }
 }
