@@ -8,8 +8,8 @@ namespace Core
         private int distanceAlien = 5;
         public Field Field {get;}
         private GameObject Starship {get;}
-        private List<GameObject> Alien { get;}
-        private List<GameObject> Bullet { get;} = new List<GameObject>();
+        private List<GameObject> Alien {get;}
+        private List<GameObject> Bullet {get;} = new List<GameObject>();
 
         public Game(int width , int height, int numberOfAlien, char backGround)
         {
@@ -78,7 +78,7 @@ namespace Core
             {
                 for (var j = 0; j < Bullet.Count; j++)
                 {
-                    if (Alien[i].Position == Bullet[j].Position)
+                    if (Bullet[j] != null && Alien[i].Position == Bullet[j].Position)
                     {
                         Bullet.RemoveAt(j);
                         Alien.RemoveAt(i);
@@ -93,7 +93,7 @@ namespace Core
             Field.ZeroField();
             Field.Set(Starship);
             foreach (var alien in Alien) Field.Set(alien);
-            foreach (var bullet in Bullet) if (Bullet != null) Field.Set(bullet);
+            foreach (var bullet in Bullet) if (bullet != null) Field.Set(bullet);
         }
 
         public bool AlienIsDie()

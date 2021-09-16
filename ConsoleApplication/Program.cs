@@ -9,7 +9,7 @@ namespace ConsoleApplication
     {
         private static async Task Main(string[] args)
         {
-            var game = new Game(60, 20, 50, ' ');
+            var game = new Game(60, 20, 50, '.');
             int speed = 1;
 
             _ = Task.Run(() =>
@@ -34,19 +34,21 @@ namespace ConsoleApplication
 
             while (true)
             {
+                Console.Clear();
                 game.UpdateField();
                 Draw(game.Field);
                 game.MoveAlien(speed, 0);
                 game.MoveShot(0, -1);
                 game.Collision();
 
-                await Task.Delay(1000 / 10);
-                Console.Clear();
+                await Task.Delay(1000 / 20);
+                
 
                 if (game.AlienIsDie())
                 {
                     Console.Clear();
                     Console.WriteLine("!!!YOU WIN!!!");
+                    Console.ReadLine();
                     break;
                 }
 
@@ -54,6 +56,7 @@ namespace ConsoleApplication
                 {
                     Console.Clear();
                     Console.WriteLine("!!!GAME OVER!!!");
+                    Console.ReadLine();
                     break;
                 }
             }
