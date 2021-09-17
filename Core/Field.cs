@@ -23,6 +23,11 @@
             for (var j = 0; j < Width; j++)
                 FieldArray[i, j] = Fond;
         }
+
+        public void ZeroPosition(GameObject gameObject)
+        {
+            FieldArray[gameObject.Position.Y, gameObject.Position.X] = Fond;
+        }
         public void Set(GameObject gameObject)
         {
             FieldArray[gameObject.Position.Y, gameObject.Position.X] = gameObject.Body;

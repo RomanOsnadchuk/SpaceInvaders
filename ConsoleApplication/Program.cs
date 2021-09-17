@@ -1,6 +1,5 @@
 ﻿using Core;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ConsoleApplication
@@ -9,7 +8,7 @@ namespace ConsoleApplication
     {
         private static async Task Main(string[] args)
         {
-            var game = new Game(60, 20, 50, '.');
+            var game = new Game(60, 20, 2, '.');
             int speed = 1;
 
             _ = Task.Run(() =>
@@ -35,7 +34,7 @@ namespace ConsoleApplication
             while (true)
             {
                 Console.Clear();
-                game.UpdateField();
+                //game.UpdateField();
                 Draw(game.Field);
                 game.MoveAlien(speed, 0);
                 game.MoveShot(0, -1);
@@ -43,7 +42,6 @@ namespace ConsoleApplication
 
                 await Task.Delay(1000 / 20);
                 
-
                 if (game.AlienIsDie())
                 {
                     Console.Clear();
