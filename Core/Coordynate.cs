@@ -4,14 +4,14 @@ namespace Core
 {
     public class Coordynate : IEquatable<Coordynate>
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-
         public Coordynate(int x, int y)
         {
             X = x;
             Y = y;
         }
+
+        public int X { get; set; }
+        public int Y { get; set; }
 
 
         public bool Equals(Coordynate other)
@@ -37,7 +37,7 @@ namespace Core
                 return (X * 397) ^ Y;
             }
         }
-        
+
         public static bool operator ==(Coordynate left, Coordynate right)
         {
             return Equals(left, right);

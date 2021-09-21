@@ -1,6 +1,6 @@
-﻿using Core;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Core;
 
 namespace ConsoleApplication
 {
@@ -9,27 +9,27 @@ namespace ConsoleApplication
         private static async Task Main(string[] args)
         {
             var game = new Game(60, 20, 2, '.');
-            int speed = 1;
+            var speed = 1;
 
             _ = Task.Run(() =>
-              {
-                  while (true)
-                  {
-                      var key = Console.ReadKey();
-                      switch (key.KeyChar)
-                      {
-                          case 'a':
-                              game.MoveStarship(-1, 0);
-                              break;
-                          case 'd':
-                              game.MoveStarship(1, 0);
-                              break;
-                          case 'k':
-                              game.Shot();
-                              break;
-                      }
-                  }
-              });
+            {
+                while (true)
+                {
+                    var key = Console.ReadKey();
+                    switch (key.KeyChar)
+                    {
+                        case 'a':
+                            game.MoveStarship(-1, 0);
+                            break;
+                        case 'd':
+                            game.MoveStarship(1, 0);
+                            break;
+                        case 'k':
+                            game.Shot();
+                            break;
+                    }
+                }
+            });
 
             while (true)
             {
@@ -41,7 +41,7 @@ namespace ConsoleApplication
                 game.Collision();
 
                 await Task.Delay(1000 / 20);
-                
+
                 if (game.AlienIsDie())
                 {
                     Console.Clear();

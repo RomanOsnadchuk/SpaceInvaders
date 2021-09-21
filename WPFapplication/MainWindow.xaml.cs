@@ -1,47 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using System.Windows.Input;
-using System.Windows.Shapes;
-using System.Windows.Media;
+using System.Windows.Threading;
 using Core;
 
 namespace WPFapplication
 {
     public partial class MainWindow : Window
     {
-        DispatcherTimer timer = new DispatcherTimer();
-
-        int speed = 10;
-        bool readyShot;
-        private bool StartGame;
+        private readonly Game game;
+        private bool InvaderLive = true;
         private bool invaiderDir = true;
-        bool InvaderLive = true;
-        private Game game;
+        private bool readyShot;
+
+        private int speed = 10;
+        private bool StartGame;
+        private readonly DispatcherTimer timer = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
             myCanvas.Focus();
-            game = new Game(10, 20, 1, ' ');
+            game = new Game(20, 20, 1, ' ');
             timer.Tick += MainTimerEvent;
-            timer.Interval = TimeSpan.FromMilliseconds(1000/50);
+            timer.Interval = TimeSpan.FromMilliseconds(1000 / 50);
             timer.Start();
         }
 
 
         private void MainTimerEvent(object sender, EventArgs e)
         {
-            
-
             if (StartGame)
             {
                 GameBox.Clear();
 
-                if(Start.Visibility != Visibility.Hidden) Start.Visibility = Visibility.Hidden;
-               // game.UpdateField();
+                if (Start.Visibility != Visibility.Hidden) Start.Visibility = Visibility.Hidden;
+                // game.UpdateField();
                 DrawField(game.Field, GameBox);
                 game.MoveAlien(1, 0);
                 game.MoveShot(0, -1);
@@ -53,10 +48,19 @@ namespace WPFapplication
         {
             switch (e.Key)
             {
-                case Key.Left: game.MoveStarship(-1,0); break;
-                case Key.Right: game.MoveStarship(1, 0); break;
-                case Key.Space: if (readyShot) game.Shot(); readyShot = false; break;
-                case Key.Enter: StartGame = true; break;
+                case Key.Left:
+                    game.MoveStarship(-1, 0);
+                    break;
+                case Key.Right:
+                    game.MoveStarship(1, 0);
+                    break;
+                case Key.Space:
+                    if (readyShot) game.Shot();
+                    readyShot = false;
+                    break;
+                case Key.Enter:
+                    StartGame = true;
+                    break;
             }
         }
 
@@ -66,7 +70,9 @@ namespace WPFapplication
             {
                 case Key.Left: break;
                 case Key.Right: break;
-                case Key.Space: readyShot = true; break;
+                case Key.Space:
+                    readyShot = true;
+                    break;
             }
         }
 
