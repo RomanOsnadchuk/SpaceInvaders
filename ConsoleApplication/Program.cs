@@ -11,11 +11,13 @@ namespace ConsoleApplication
     {
         private static async Task Main(string[] args)
         {
+            bool run;
+            var repository = new FileRepository();
+
             while (true)
             {
-                bool run = false;
-                var repository = new FileRepository();
-                Game game = new Game(60, 20, 20, ' '); 
+                run = false;
+                Game game = new Game(30, 10, 20, '.'); 
                 var speed = 1;
 
                 Console.Clear();
@@ -24,16 +26,16 @@ namespace ConsoleApplication
                 Console.WriteLine("2) Load Game");
                 Console.WriteLine("3) Exit");
                 Console.Write("\r\nSelect an option: ");
+                var a = Console.ReadLine();
 
-                switch (Console.ReadLine())
+                switch (a)
                 {
                     case "1":
                         run = true;
-                        game = new Game(60, 20, 20, ' ');
                         break;
                     case "2":
+                        game = repository.LoadGame() ?? game;
                         run = true;
-                        game = repository.LoadGame() ?? new Game(60, 20, 20, ' ');
                         break;
                     case "3":
                         return;
@@ -41,7 +43,7 @@ namespace ConsoleApplication
 
                 _ = Task.Run(() =>
                 {
-                    while (true)
+                    while (run)
                     {
                         var key = Console.ReadKey();
                         switch (key.KeyChar)
@@ -58,6 +60,9 @@ namespace ConsoleApplication
                             case 'y':
                                 repository.SaveGame(game);
                                 break;
+                            case 'e':
+                                run = false;
+                                break;
                         }
                     }
                 });
@@ -66,15 +71,17 @@ namespace ConsoleApplication
                 {
                     Console.Clear();
                     //game.UpdateField();
-                    Draw(game.Field);
-                    game.MoveAliens(speed, 0);
                     game.MoveShot(0, -1);
+                    game.MoveAliens(speed, 0);
+                    
                     game.Collision();
+                    Draw(game.Field);
 
-                    await Task.Delay(1000 / 20);
+                    await Task.Delay(1000 / 5);
 
                     if (game.AliensIsDie())
                     {
+                        run = false;
                         Console.Clear();
                         Console.WriteLine("!!!YOU WIN!!!");
                         Console.ReadLine();
@@ -83,6 +90,7 @@ namespace ConsoleApplication
 
                     if (game.AliensIsWin())
                     {
+                        run = false;
                         Console.Clear();
                         Console.WriteLine("!!!GAME OVER!!!");
                         Console.ReadLine();

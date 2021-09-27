@@ -57,18 +57,18 @@ namespace Core
 
         public void MoveAliens(int deltaX, int deltaY)
         {
-            foreach (var alien in Aliens)
+            for (var i = 0; i < Aliens.Count; i++)
             {
-                Field.ZeroPosition(alien);
-                alien.Position.X += deltaX;
-                if (alien.Position.X > Field.Width - 1)
+                Field.ZeroPosition(Aliens[i]);
+                Aliens[i].Position.X += deltaX;
+                if (Aliens[i].Position.X > Field.Width - 1)
                 {
-                    alien.Position.X = 0;
-                    alien.Position.Y += 1;
+                    Aliens[i].Position.X = 0;
+                    Aliens[i].Position.Y += 1;
                 }
 
-                alien.Position.Y += deltaY;
-                Field.Set(alien);
+                Aliens[i].Position.Y += deltaY;
+                Field.Set(Aliens[i]);
             }
         }
 
@@ -99,17 +99,16 @@ namespace Core
         {
             for (var i = 0; i < Aliens.Count; i++)
             for (var j = 0; j < Bullets.Count; j++)
-                if (Bullets[j] != null && Aliens[i].Position == Bullets[j].Position)
+                if (Aliens[i].Position == Bullets[j].Position)
                 {
                     Field.ZeroPosition(Bullets[j]);
                     Bullets.RemoveAt(j);
-                    Field.ZeroPosition(Aliens[i]);
                     Aliens.RemoveAt(i);
                     break;
                 }
         }
 
-        public void UpdateField()
+        /*public void UpdateField()
         {
             Field.ZeroField();
             Field.Set(Starship);
@@ -117,7 +116,7 @@ namespace Core
             foreach (var bullet in Bullets)
                 if (bullet != null)
                     Field.Set(bullet);
-        }
+        }*/
 
         public bool AliensIsDie()
         {

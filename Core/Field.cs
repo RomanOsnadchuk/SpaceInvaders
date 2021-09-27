@@ -18,12 +18,12 @@
         public char[,] FieldArray { get; }
         public char BackGround { get; }
 
-        public void ZeroField()
+        /*public void ZeroField()
         {
             for (var i = 0; i < Height; i++)
             for (var j = 0; j < Width; j++)
                 FieldArray[i, j] = BackGround;
-        }
+        }*/
 
         public void ZeroPosition(GameObject gameObject)
         {
