@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Core;
 using Repository;
@@ -9,58 +11,83 @@ namespace ConsoleApplication
     {
         private static async Task Main(string[] args)
         {
-            var repository = new FileRepository();
-            var game = repository.LoadGame() ?? new Game(60, 20, 20, ' ');
-            var speed = 1;
-
-            _ = Task.Run(() =>
-            {
-                while (true)
-                {
-                    var key = Console.ReadKey();
-                    switch (key.KeyChar)
-                    {
-                        case 'a':
-                            game.MoveStarship(-1, 0);
-                            break;
-                        case 'd':
-                            game.MoveStarship(1, 0);
-                            break;
-                        case 'k':
-                            game.Shot();
-                            break;
-                        case 'y':
-                            repository.SaveGame(game);
-                            break;
-                    }
-                }
-            });
-
             while (true)
             {
+                bool run = false;
+                var repository = new FileRepository();
+                Game game = new Game(60, 20, 20, ' '); 
+                var speed = 1;
+
                 Console.Clear();
-                //game.UpdateField();
-                Draw(game.Field);
-                game.MoveAliens(speed, 0);
-                game.MoveShot(0, -1);
-                game.Collision();
+                Console.WriteLine("Choose an option:");
+                Console.WriteLine("1) Start New Game");
+                Console.WriteLine("2) Load Game");
+                Console.WriteLine("3) Exit");
+                Console.Write("\r\nSelect an option: ");
 
-                await Task.Delay(1000 / 20);
-
-                if (game.AliensIsDie())
+                switch (Console.ReadLine())
                 {
-                    Console.Clear();
-                    Console.WriteLine("!!!YOU WIN!!!");
-                    Console.ReadLine();
-                    break;
+                    case "1":
+                        run = true;
+                        game = new Game(60, 20, 20, ' ');
+                        break;
+                    case "2":
+                        run = true;
+                        game = repository.LoadGame() ?? new Game(60, 20, 20, ' ');
+                        break;
+                    case "3":
+                        return;
                 }
 
-                if (game.AliensIsWin())
+                _ = Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        var key = Console.ReadKey();
+                        switch (key.KeyChar)
+                        {
+                            case 'a':
+                                game.MoveStarship(-1, 0);
+                                break;
+                            case 'd':
+                                game.MoveStarship(1, 0);
+                                break;
+                            case 'k':
+                                game.Shot();
+                                break;
+                            case 'y':
+                                repository.SaveGame(game);
+                                break;
+                        }
+                    }
+                });
+
+                while (run)
                 {
                     Console.Clear();
-                    Console.WriteLine("!!!GAME OVER!!!");
-                    Console.ReadLine();
-                    break;
+                    //game.UpdateField();
+                    Draw(game.Field);
+                    game.MoveAliens(speed, 0);
+                    game.MoveShot(0, -1);
+                    game.Collision();
+
+                    await Task.Delay(1000 / 20);
+
+                    if (game.AliensIsDie())
+                    {
+                        Console.Clear();
+                        Console.WriteLine("!!!YOU WIN!!!");
+                        Console.ReadLine();
+                        break;
+                    }
+
+                    if (game.AliensIsWin())
+                    {
+                        Console.Clear();
+                        Console.WriteLine("!!!GAME OVER!!!");
+                        Console.ReadLine();
+                        break;
+                    }
                 }
             }
         }
