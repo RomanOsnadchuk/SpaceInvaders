@@ -10,13 +10,13 @@ namespace WPFapplication
     public partial class MainWindow : Window
     {
         private readonly Game game;
+        private readonly DispatcherTimer timer = new DispatcherTimer();
         private bool InvaderLive = true;
         private bool invaiderDir = true;
         private bool readyShot;
 
         private int speed = 10;
         private bool StartGame;
-        private readonly DispatcherTimer timer = new DispatcherTimer();
 
         public MainWindow()
         {
@@ -38,7 +38,7 @@ namespace WPFapplication
                 if (Start.Visibility != Visibility.Hidden) Start.Visibility = Visibility.Hidden;
                 // game.UpdateField();
                 DrawField(game.Field, GameBox);
-                game.MoveAlien(1, 0);
+                game.MoveAliens(1, 0);
                 game.MoveShot(0, -1);
                 game.Collision();
             }

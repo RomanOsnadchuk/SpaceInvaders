@@ -4,10 +4,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFapplication", "WPFapplication\WPFapplication.csproj", "{45D11ABC-7398-4464-9E7B-720B08D31BAA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B} = {08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{2CB59078-5809-4A59-BBDD-9C1EEEF366BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{F1565C6E-C043-485E-ACF3-4EC7D1C9D51A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B} = {08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2CB59078-5809-4A59-BBDD-9C1EEEF366BA} = {2CB59078-5809-4A59-BBDD-9C1EEEF366BA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +38,10 @@ Global
 		{F1565C6E-C043-485E-ACF3-4EC7D1C9D51A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1565C6E-C043-485E-ACF3-4EC7D1C9D51A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1565C6E-C043-485E-ACF3-4EC7D1C9D51A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08EB75D8-540F-49CD-BA8B-6D5C73BF9A2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

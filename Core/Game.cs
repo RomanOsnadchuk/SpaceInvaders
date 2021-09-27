@@ -4,35 +4,43 @@ namespace Core
 {
     public class Game
     {
-        public Game(int width, int height, int numberOfAlien, char backGround)
+        public Game(int width, int height, int numberOfAliens, char backGround)
         {
             Field = new Field(width, height, backGround);
             DistanceAlien = 5;
             Starship = new GameObject('Д', width / 2, height - 1);
-            Bullet = new List<GameObject>();
+            Bullets = new List<GameObject>();
             Field.Set(Starship);
 
-            Alien = new List<GameObject>();
+            Aliens = new List<GameObject>();
 
-            for (int i = 0, j = 0; i < numberOfAlien; i++)
+            for (int i = 0, j = 0; i < numberOfAliens; i++)
                 if (i * DistanceAlien - j * width < width)
                 {
-                    Alien.Add(new GameObject('W', i * DistanceAlien - j * width, j));
-                    Field.Set(Alien[i]);
+                    Aliens.Add(new GameObject('W', i * DistanceAlien - j * width, j));
+                    Field.Set(Aliens[i]);
                 }
                 else
                 {
                     j++;
-                    Alien.Add(new GameObject('W', i * DistanceAlien - j * width, j));
-                    Field.Set(Alien[i]);
+                    Aliens.Add(new GameObject('W', i * DistanceAlien - j * width, j));
+                    Field.Set(Aliens[i]);
                 }
+        }
+
+        public Game(Field field, GameObject starship, List<GameObject> aliens, List<GameObject> bullets)
+        {
+            Field = field;
+            Starship = starship;
+            Aliens = aliens;
+            Bullets = bullets;
         }
 
         private int DistanceAlien { get; }
         public Field Field { get; }
-        private GameObject Starship { get; }
-        private List<GameObject> Alien { get; }
-        private List<GameObject> Bullet { get; }
+        public GameObject Starship { get; }
+        public List<GameObject> Aliens { get; }
+        public List<GameObject> Bullets { get; }
 
         public void MoveStarship(int deltaX, int deltaY)
         {
@@ -47,9 +55,9 @@ namespace Core
             Field.Set(Starship);
         }
 
-        public void MoveAlien(int deltaX, int deltaY)
+        public void MoveAliens(int deltaX, int deltaY)
         {
-            foreach (var alien in Alien)
+            foreach (var alien in Aliens)
             {
                 Field.ZeroPosition(alien);
                 alien.Position.X += deltaX;
@@ -66,37 +74,37 @@ namespace Core
 
         public void Shot()
         {
-            Bullet.Add(new GameObject('*', Starship.Position.X, Starship.Position.Y - 1));
-            Field.Set(Bullet[Bullet.Count - 1]);
+            Bullets.Add(new GameObject('*', Starship.Position.X, Starship.Position.Y - 1));
+            Field.Set(Bullets[Bullets.Count - 1]);
         }
 
         public void MoveShot(int deltaX, int deltaY)
         {
-            for (var i = 0; i < Bullet.Count; i++)
+            for (var i = 0; i < Bullets.Count; i++)
             {
-                Field.ZeroPosition(Bullet[i]);
-                Bullet[i].Position.X += deltaX;
-                Bullet[i].Position.Y += deltaY;
-                if (Bullet[i].Position.Y < 0)
+                Field.ZeroPosition(Bullets[i]);
+                Bullets[i].Position.X += deltaX;
+                Bullets[i].Position.Y += deltaY;
+                if (Bullets[i].Position.Y < 0)
                 {
-                    Bullet.RemoveAt(i);
+                    Bullets.RemoveAt(i);
                     continue;
                 }
 
-                Field.Set(Bullet[i]);
+                Field.Set(Bullets[i]);
             }
         }
 
         public void Collision()
         {
-            for (var i = 0; i < Alien.Count; i++)
-            for (var j = 0; j < Bullet.Count; j++)
-                if (Bullet[j] != null && Alien[i].Position == Bullet[j].Position)
+            for (var i = 0; i < Aliens.Count; i++)
+            for (var j = 0; j < Bullets.Count; j++)
+                if (Bullets[j] != null && Aliens[i].Position == Bullets[j].Position)
                 {
-                    Field.ZeroPosition(Bullet[j]);
-                    Bullet.RemoveAt(j);
-                    Field.ZeroPosition(Alien[i]);
-                    Alien.RemoveAt(i);
+                    Field.ZeroPosition(Bullets[j]);
+                    Bullets.RemoveAt(j);
+                    Field.ZeroPosition(Aliens[i]);
+                    Aliens.RemoveAt(i);
                     break;
                 }
         }
@@ -105,20 +113,20 @@ namespace Core
         {
             Field.ZeroField();
             Field.Set(Starship);
-            foreach (var alien in Alien) Field.Set(alien);
-            foreach (var bullet in Bullet)
+            foreach (var alien in Aliens) Field.Set(alien);
+            foreach (var bullet in Bullets)
                 if (bullet != null)
                     Field.Set(bullet);
         }
 
-        public bool AlienIsDie()
+        public bool AliensIsDie()
         {
-            return Alien.Count == 0;
+            return Aliens.Count == 0;
         }
 
-        public bool AlienIsWin()
+        public bool AliensIsWin()
         {
-            foreach (var alien in Alien)
+            foreach (var alien in Aliens)
                 if (alien.Position.Y == Field.Height - 1)
                     return true;
 

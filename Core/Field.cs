@@ -2,32 +2,32 @@
 {
     public class Field
     {
-        public Field(int width, int height, char fond = '.')
+        public Field(int width, int height, char backGround = '.')
         {
             Width = width;
             Height = height;
-            Fond = fond;
-            FieldArray = new char[height, width];
-            for (var i = 0; i < height; i++)
-            for (var j = 0; j < width; j++)
-                FieldArray[i, j] = fond;
+            BackGround = backGround;
+            FieldArray = new char[Height, Width];
+            for (var i = 0; i < Height; i++)
+            for (var j = 0; j < Width; j++)
+                FieldArray[i, j] = BackGround;
         }
 
         public int Width { get; }
         public int Height { get; }
         public char[,] FieldArray { get; }
-        private char Fond { get; }
+        public char BackGround { get; }
 
         public void ZeroField()
         {
             for (var i = 0; i < Height; i++)
             for (var j = 0; j < Width; j++)
-                FieldArray[i, j] = Fond;
+                FieldArray[i, j] = BackGround;
         }
 
         public void ZeroPosition(GameObject gameObject)
         {
-            FieldArray[gameObject.Position.Y, gameObject.Position.X] = Fond;
+            FieldArray[gameObject.Position.Y, gameObject.Position.X] = BackGround;
         }
 
         public void Set(GameObject gameObject)

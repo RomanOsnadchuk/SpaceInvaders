@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Core;
+using Repository;
 
 namespace ConsoleApplication
 {
@@ -8,7 +9,8 @@ namespace ConsoleApplication
     {
         private static async Task Main(string[] args)
         {
-            var game = new Game(60, 20, 2, '.');
+            var repository = new FileRepository();
+            var game = repository.LoadGame() ?? new Game(60, 20, 20, ' ');
             var speed = 1;
 
             _ = Task.Run(() =>
@@ -27,6 +29,9 @@ namespace ConsoleApplication
                         case 'k':
                             game.Shot();
                             break;
+                        case 'y':
+                            repository.SaveGame(game);
+                            break;
                     }
                 }
             });
@@ -36,13 +41,13 @@ namespace ConsoleApplication
                 Console.Clear();
                 //game.UpdateField();
                 Draw(game.Field);
-                game.MoveAlien(speed, 0);
+                game.MoveAliens(speed, 0);
                 game.MoveShot(0, -1);
                 game.Collision();
 
                 await Task.Delay(1000 / 20);
 
-                if (game.AlienIsDie())
+                if (game.AliensIsDie())
                 {
                     Console.Clear();
                     Console.WriteLine("!!!YOU WIN!!!");
@@ -50,7 +55,7 @@ namespace ConsoleApplication
                     break;
                 }
 
-                if (game.AlienIsWin())
+                if (game.AliensIsWin())
                 {
                     Console.Clear();
                     Console.WriteLine("!!!GAME OVER!!!");
