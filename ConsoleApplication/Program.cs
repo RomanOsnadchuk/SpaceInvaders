@@ -12,12 +12,16 @@ namespace ConsoleApplication
         private static async Task Main(string[] args)
         {
             bool run;
+            bool moveLeft = false;
+            bool moveRight = false;
+            bool fire = false;
+
             var repository = new FileRepository();
 
             while (true)
             {
                 run = false;
-                Game game = new Game(30, 10, 20, '.'); 
+                Game game = new Game(60, 20, 20, '.'); 
                 var speed = 1;
 
                 Console.Clear();
@@ -49,13 +53,13 @@ namespace ConsoleApplication
                         switch (key.KeyChar)
                         {
                             case 'a':
-                                game.MoveStarship(-1, 0);
+                                moveLeft = true;
                                 break;
                             case 'd':
-                                game.MoveStarship(1, 0);
+                                moveRight = true;
                                 break;
                             case 'k':
-                                game.Shot();
+                                fire = true;
                                 break;
                             case 'y':
                                 repository.SaveGame(game);
@@ -70,14 +74,19 @@ namespace ConsoleApplication
                 while (run)
                 {
                     Console.Clear();
-                    //game.UpdateField();
+
+                    if (moveLeft) { game.MoveStarship(-1, 0); moveLeft = false; }
+                    if (moveRight) { game.MoveStarship(1, 0); moveRight = false; }
+                    if (fire) { game.Shot(); fire = false; }
+
                     game.MoveShot(0, -1);
                     game.MoveAliens(speed, 0);
                     
                     game.Collision();
+                    game.UpdateField();
                     Draw(game.Field);
 
-                    await Task.Delay(1000 / 5);
+                    await Task.Delay(1000 / 6);
 
                     if (game.AliensIsDie())
                     {
