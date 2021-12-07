@@ -33,11 +33,12 @@ namespace WPFapplication
         {
             if (StartGame)
             {
-                GameBox.Clear();
+                //GameBox.Clear();
 
                 if (Start.Visibility != Visibility.Hidden) Start.Visibility = Visibility.Hidden;
                 // game.UpdateField();
-                DrawField(game.Field, GameBox);
+                //DrawField(game.Field, GameBox);
+                Canvas.SetLeft(SS, 25 + (gameWindow.ActualWidth - 25*2) / game.Field.Width * game.Starship.Position.X);
                 game.MoveAliens(1, 0);
                 game.MoveShot(0, -1);
                 game.Collision();
@@ -76,16 +77,12 @@ namespace WPFapplication
             }
         }
 
-        private void DrawField(Field field, TextBox textBox)
-        {
-            for (var i = 0; i < field.Height; i++)
-            {
-                textBox.Text += '|';
-                for (var j = 0; j < field.Width; j++)
-                    textBox.Text += field.FieldArray[i, j];
-                textBox.Text += '|';
-                textBox.Text += '\n';
-            }
-        }
+        //private void DrawField(Field field)
+        //{
+        //    var winHeight = gameWindow.ActualHeight;
+        //    var winWidth = gameWindow.ActualWidth;
+        //
+        //    Canvas.SetLeft(SS, 50 + (winWidth - 50)/field.Width * );
+        //}
     }
 }

@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="708.975" Width="584" ResizeMode="NoResize">
+        mc:Ignorable="d" 
+        Title="MainWindow" Height="708.975" Width="584" ResizeMode="NoResize" Name="gameWindow">
     <Canvas Name="myCanvas" Focusable="True" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
 
         <TextBox Name="GameBox" Height="621" Canvas.Left="30" TextWrapping="Wrap" Canvas.Top="30" Width="512"
@@ -16,6 +16,7 @@
                  IsEnabled="False" />
         <TextBlock Name="Start" Height="41" Canvas.Left="166" TextWrapping="Wrap" Text="Press Enter to Start"
                    Canvas.Top="282" Width="256" FontSize="24" FontWeight="Bold" TextAlignment="Center" />
+        <Rectangle Name="SS" Fill="#FF1818DA" Height="50" Canvas.Left="234" Stroke="Black" Canvas.Top="536" Width="51"/>
 
     </Canvas>
 
