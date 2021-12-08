@@ -27,12 +27,13 @@ namespace WPFapplication
             InitializeComponent();
             myCanvas.Focus();
 
-            game = new Game(20, 20, 2, ' ');
+            game = new Game(20, 20, 11, ' ');
             winAlient = new List<Ellipse>();
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < game.Aliens.Count; i++)
             {
                 winAlient.Add(new System.Windows.Shapes.Ellipse() { Height = 29, Width = 14, Fill = Brushes.Red, Visibility = Visibility.Visible, IsEnabled = true});
+                myCanvas.Children.Add(winAlient[i]);
             }
 
             timer.Tick += MainTimerEvent;
