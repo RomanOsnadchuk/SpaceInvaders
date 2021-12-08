@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
-        Title="MainWindow" Height="708.975" Width="584" ResizeMode="NoResize" Name="gameWindow">
+        Title="MainWindow" Height="708.975" Width="584" ResizeMode="CanResize" Name="gameWindow">
     <Canvas Name="myCanvas" Focusable="True" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
 
         <TextBox Name="GameBox" Height="621" Canvas.Left="30" TextWrapping="Wrap" Canvas.Top="30" Width="512"
                  FontSize="20" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Center"
-                 TextAlignment="Center" IsEnabled="False" />
+                 TextAlignment="Center" IsEnabled="False" Visibility="Hidden" />
         <TextBox Name="Win" Height="72" Canvas.Left="85" TextWrapping="Wrap" Text="You Win!!!" Canvas.Top="205"
                  Width="357" TextAlignment="Center" HorizontalAlignment="Center" FontSize="50" FontWeight="Bold"
                  FontFamily="Swis721 BlkEx BT" Background="White" Foreground="#FFE80000" Visibility="Hidden"
@@ -17,6 +17,7 @@
         <TextBlock Name="Start" Height="41" Canvas.Left="166" TextWrapping="Wrap" Text="Press Enter to Start"
                    Canvas.Top="282" Width="256" FontSize="24" FontWeight="Bold" TextAlignment="Center" />
         <Rectangle Name="SS" Fill="#FF1818DA" Height="50" Canvas.Left="234" Stroke="Black" Canvas.Top="536" Width="51"/>
+        <Ellipse Name="Ellipse1" Fill="Red" Height="29" Canvas.Left="234" Stroke="Black" Canvas.Top="156" Width="14"/>
 
     </Canvas>
 
