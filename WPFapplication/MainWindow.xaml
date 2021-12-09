@@ -17,7 +17,7 @@
         <TextBlock Name="Start" Height="41" Canvas.Left="166" TextWrapping="Wrap" Text="Press Enter to Start"
                    Canvas.Top="282" Width="256" FontSize="24" FontWeight="Bold" TextAlignment="Center" />
         <Rectangle Name="SS" Fill="#FF1818DA" Height="50" Canvas.Left="234" Stroke="Black" Canvas.Top="536" Width="51"/>
-        <Ellipse Name="Ellipse1" Fill="Red" Height="29" Canvas.Left="234" Stroke="Black" Canvas.Top="156" Width="14"/>
+        <Rectangle Fill="Red" Height="32" Canvas.Left="123" Stroke="Black" Canvas.Top="316" Width="8"/>
 
     </Canvas>
 

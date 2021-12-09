@@ -14,6 +14,7 @@ namespace WPFapplication
     {
         private readonly Game game;
         private List<Ellipse> winAlient;
+        private List<Rectangle> winBullets;
         private readonly DispatcherTimer timer = new DispatcherTimer();
         //private bool InvaderLive = true;
         //private bool invaiderDir = true;
@@ -27,17 +28,18 @@ namespace WPFapplication
             InitializeComponent();
             myCanvas.Focus();
 
-            game = new Game(20, 20, 11, ' ');
+            game = new Game(10, 30, 5, ' ');
             winAlient = new List<Ellipse>();
+            winBullets = new List<Rectangle>();
 
             for (int i = 0; i < game.Aliens.Count; i++)
             {
-                winAlient.Add(new System.Windows.Shapes.Ellipse() { Height = 29, Width = 14, Fill = Brushes.Red, Visibility = Visibility.Visible, IsEnabled = true});
+                winAlient.Add(new Ellipse() { Height = 29, Width = 70, Fill = Brushes.Red, Visibility = Visibility.Visible, IsEnabled = true});
                 myCanvas.Children.Add(winAlient[i]);
             }
 
             timer.Tick += MainTimerEvent;
-            timer.Interval = TimeSpan.FromMilliseconds(1000 / 10);
+            timer.Interval = TimeSpan.FromMilliseconds(1000 / 10 );
             timer.Start();
         }
 
@@ -47,27 +49,52 @@ namespace WPFapplication
             if (StartGame)
             {
                 if (Start.Visibility != Visibility.Hidden) Start.Visibility = Visibility.Hidden;
+
+                game.MoveAliens(1, 0);
+                game.MoveShot(0, -1);
+                var hit = game.Collision();
+
+                if (hit != null)
+                {
+                    myCanvas.Children.Remove(winAlient[hit[0]]);
+                    myCanvas.Children.Remove(winBullets[hit[1]]);
+
+                    winAlient.RemoveAt(hit[0]);
+                    winBullets.RemoveAt(hit[1]);
+                }
+
                 UpdatePos(SS, game.Starship);
+                UpdatePosAliens();
+                UpdatePosBullet();
 
+            }
 
+            void UpdatePos(Shape shape, GameObject gObject)
+            {
+                double gameBorder = 50;
+                Canvas.SetLeft(shape, CalcPos(gameWindow.ActualWidth, game.Field.Width, gObject.Position.X, shape.Width));
+                Canvas.SetTop(shape, CalcPos(gameWindow.ActualHeight, game.Field.Height, gObject.Position.Y, shape.Height));
+
+                double CalcPos(double win, double field, double pos, double shape)
+                {
+                    return gameBorder + (win - 2 * gameBorder) / field * pos + (win - 2 * gameBorder) / (2 * field) - shape / 2;
+                }
+            }
+
+            void UpdatePosAliens()
+            {
                 for (int i = 0; i < game.Aliens.Count; i++)
                 {
                     UpdatePos(winAlient[i], game.Aliens[i]);
                 }
-                game.MoveAliens(1, 0);
-                game.MoveShot(0, -1);
-                game.Collision();
+
             }
 
-            void UpdatePos(System.Windows.Shapes.Shape shape, GameObject gObject)
+            void UpdatePosBullet()
             {
-                double gameBorder = 50;
-                Canvas.SetLeft(shape, calcMidl(gameWindow.ActualWidth, game.Field.Width, gObject.Position.X, shape.Width));
-                Canvas.SetTop(shape, calcMidl(gameWindow.ActualHeight, game.Field.Height, gObject.Position.Y, shape.Height));
-
-                double calcMidl(double win, double field, double pos, double shape)
+                for (int i = 0; i < game.Bullets.Count; i++)
                 {
-                    return gameBorder + (win - 2 * gameBorder) / field * pos + (win - 2 * gameBorder) / (2 * field) - shape / 2;
+                    UpdatePos(winBullets[i], game.Bullets[i]);
                 }
             }
         }
@@ -83,7 +110,12 @@ namespace WPFapplication
                     game.MoveStarship(1, 0);
                     break;
                 case Key.Space:
-                    if (readyShot) game.Shot();
+                    if (readyShot)
+                    {
+                        game.Shot();
+                        winBullets.Add(new Rectangle{ Width = 8, Height = 32, Fill= Brushes.Yellow });
+                        myCanvas.Children.Add(winBullets[winBullets.Count - 1]);
+                    }
                     readyShot = false;
                     break;
                 case Key.Enter:

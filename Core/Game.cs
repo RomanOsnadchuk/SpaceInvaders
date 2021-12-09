@@ -84,17 +84,21 @@ namespace Core
             }
         }
 
-        public void Collision()
+        public int[] Collision()
         {
-            for (var i = 0; i < Aliens.Count; i++)
-            for (var j = 0; j < Bullets.Count; j++)
+            int i = 0;
+            int j = 0;
+            for (; i < Aliens.Count; i++)
+            for (; j < Bullets.Count; j++)
                 if (Aliens[i].Position == Bullets[j].Position)
                 {
                     Field.ZeroPosition(Bullets[j]);
                     Bullets.RemoveAt(j);
                     Aliens.RemoveAt(i);
-                    break;
+                    return new[] { i, j };
                 }
+
+            return null;
         }
 
         public void UpdateField()
