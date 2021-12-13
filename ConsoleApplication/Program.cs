@@ -21,7 +21,7 @@ namespace ConsoleApplication
             while (true)
             {
                 run = false;
-                Game game = new Game(60, 20, 20, '.'); 
+                Game game = new Game(60, 20, 5, '.'); 
                 var speed = 1;
 
                 Console.Clear();

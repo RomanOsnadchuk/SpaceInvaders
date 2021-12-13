@@ -7,20 +7,18 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Core;
+using Repository;
 
 namespace WPFapplication
 {
     public partial class MainWindow : Window
     {
-        private readonly Game game;
+        private Game game;
         private List<Ellipse> winAlient;
         private List<Rectangle> winBullets;
         private readonly DispatcherTimer timer = new DispatcherTimer();
-        //private bool InvaderLive = true;
-        //private bool invaiderDir = true;
+        private FileRepository myRepository;
         private bool readyShot;
-
-        //private int speed = 10;
         private bool StartGame;
 
         public MainWindow()
@@ -28,13 +26,14 @@ namespace WPFapplication
             InitializeComponent();
             myCanvas.Focus();
 
-            game = new Game(10, 30, 5, ' ');
+            game = new Game(10, 20, 5, ' ');
             winAlient = new List<Ellipse>();
             winBullets = new List<Rectangle>();
+            myRepository = new FileRepository();
 
             for (int i = 0; i < game.Aliens.Count; i++)
             {
-                winAlient.Add(new Ellipse() { Height = 29, Width = 70, Fill = Brushes.Red, Visibility = Visibility.Visible, IsEnabled = true});
+                winAlient.Add(new Ellipse() { Height = 20, Width = 40, Fill = Brushes.Red, Visibility = Visibility.Visible, IsEnabled = true});
                 myCanvas.Children.Add(winAlient[i]);
             }
 
@@ -51,14 +50,18 @@ namespace WPFapplication
                 if (Start.Visibility != Visibility.Hidden) Start.Visibility = Visibility.Hidden;
 
                 game.MoveAliens(1, 0);
-                game.MoveShot(0, -1);
-                var hit = game.Collision();
+                var bulletLeave = game.MoveShot(0, -1);
+                if (bulletLeave.HasValue)
+                {
+                    myCanvas.Children.Remove(winBullets[bulletLeave.Value]);
+                    winBullets.RemoveAt(bulletLeave.Value);
+                }
 
+                var hit = game.Collision();
                 if (hit != null)
                 {
                     myCanvas.Children.Remove(winAlient[hit[0]]);
                     myCanvas.Children.Remove(winBullets[hit[1]]);
-
                     winAlient.RemoveAt(hit[0]);
                     winBullets.RemoveAt(hit[1]);
                 }
@@ -67,7 +70,12 @@ namespace WPFapplication
                 UpdatePosAliens();
                 UpdatePosBullet();
 
+                if (game.AliensIsWin()) StartGame = false;
+                if (game.AliensIsDie()) StartGame = false;
             }
+
+            if (game.AliensIsWin()) Loss.Visibility = Visibility.Visible;
+            if (game.AliensIsDie()) win.Visibility = Visibility.Visible;
 
             void UpdatePos(Shape shape, GameObject gObject)
             {
@@ -87,7 +95,6 @@ namespace WPFapplication
                 {
                     UpdatePos(winAlient[i], game.Aliens[i]);
                 }
-
             }
 
             void UpdatePosBullet()
@@ -103,13 +110,13 @@ namespace WPFapplication
         {
             switch (e.Key)
             {
-                case Key.Left:
+                case Key.A:
                     game.MoveStarship(-1, 0);
                     break;
-                case Key.Right:
+                case Key.D:
                     game.MoveStarship(1, 0);
                     break;
-                case Key.Space:
+                case Key.K:
                     if (readyShot)
                     {
                         game.Shot();
@@ -128,20 +135,22 @@ namespace WPFapplication
         {
             switch (e.Key)
             {
-                case Key.Left: break;
-                case Key.Right: break;
-                case Key.Space:
+                case Key.A: break;
+                case Key.D: break;
+                case Key.K:
                     readyShot = true;
                     break;
             }
         }
 
-        //private void DrawField(Field field)
-        //{
-        //    var winHeight = gameWindow.ActualHeight;
-        //    var winWidth = gameWindow.ActualWidth;
-        //
-        //    Canvas.SetLeft(SS, 50 + (winWidth - 50)/field.Width * );
-        //}
+        private void buttSave_Click(object sender, RoutedEventArgs e)
+        {
+            myRepository.SaveGame(game);
+        }
+
+        private void buttLoad_Click(object sender, RoutedEventArgs e)
+        {
+            game = myRepository.LoadGame();
+        }
     }
 }

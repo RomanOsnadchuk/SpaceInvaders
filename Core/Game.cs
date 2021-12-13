@@ -70,8 +70,10 @@ namespace Core
             Bullets.Add(new GameObject('*', Starship.Position.X, Starship.Position.Y - 1));
         }
 
-        public void MoveShot(int deltaX, int deltaY)
+        public int? MoveShot(int deltaX, int deltaY)
         {
+            int? k = null;
+
             for (var i = 0; i < Bullets.Count; i++)
             {
                 Bullets[i].Position.X += deltaX;
@@ -79,17 +81,18 @@ namespace Core
                 if (Bullets[i].Position.Y < 0)
                 {
                     Bullets.RemoveAt(i);
+                    k = i;
                 }
 
             }
+
+            return k;
         }
 
         public int[] Collision()
         {
-            int i = 0;
-            int j = 0;
-            for (; i < Aliens.Count; i++)
-            for (; j < Bullets.Count; j++)
+            for (int i = 0; i < Aliens.Count; i++)
+            for (int j = 0; j < Bullets.Count; j++)
                 if (Aliens[i].Position == Bullets[j].Position)
                 {
                     Field.ZeroPosition(Bullets[j]);
