@@ -19,8 +19,9 @@
         <Rectangle Name="SS" Fill="#FF1818DA" Height="50" Canvas.Left="234" Stroke="Black" Canvas.Top="536" Width="51"/>
         <TextBlock Name="win" Height="166" Canvas.Left="39" TextWrapping="Wrap" Text="You WIN" Canvas.Top="239" Width="503" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" RenderTransformOrigin="0.495,0.554" Visibility="Hidden"/>
         <TextBlock Name="Loss" Height="198" Canvas.Left="39" TextWrapping="Wrap" Text="Looser" Canvas.Top="221" Width="503" TextAlignment="Center" FontSize="100" Visibility="Hidden"/>
-        <Button Name="buttSave" Content="Save" Height="20" Canvas.Left="350" Canvas.Top="10" Width="82" Click="buttSave_Click"/>
-        <Button Name="buttLoad" Content="Load" Height="20" Canvas.Left="460" Canvas.Top="10" Width="82" Click="buttLoad_Click"/>
+        <Button Name="Save" Content="Save" Height="20" Canvas.Left="350" Canvas.Top="10" Width="82" Click="Save_Click"/>
+        <Button Name="Load" Content="Load" Height="20" Canvas.Left="460" Canvas.Top="10" Width="82" Click="Load_Click"/>
+        <Button Name="Pause" Content="Pause" Height="20" Canvas.Left="234" Canvas.Top="10" Width="82" Click="Pause_Click"/>
 
     </Canvas>
 

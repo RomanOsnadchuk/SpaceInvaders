@@ -143,14 +143,33 @@ namespace WPFapplication
             }
         }
 
-        private void buttSave_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             myRepository.SaveGame(game);
         }
 
-        private void buttLoad_Click(object sender, RoutedEventArgs e)
+        private void Load_Click(object sender, RoutedEventArgs e)
         {
             game = myRepository.LoadGame();
+            for(int i = 0; i < winBullets.Count; i++) myCanvas.Children.Remove(winBullets[i]);
+            for (int i = 0; i < winAlient.Count; i++) myCanvas.Children.Remove(winAlient[i]);
+            winAlient.Clear();
+            winBullets.Clear();
+            for (int i = 0; i < game.Aliens.Count; i++)
+            {
+                winAlient.Add(new Ellipse() { Height = 20, Width = 40, Fill = Brushes.Red, Visibility = Visibility.Visible, IsEnabled = true });
+                myCanvas.Children.Add(winAlient[i]);
+            }
+            for (int i = 0; i < game.Bullets.Count; i++)
+            {
+                winBullets.Add(new Rectangle { Width = 8, Height = 32, Fill = Brushes.Yellow });
+                myCanvas.Children.Add(winBullets[i]);
+            }
+        }
+
+        private void Pause_Click(object sender, RoutedEventArgs e)
+        {
+            StartGame = !StartGame;
         }
     }
 }
